@@ -11,35 +11,73 @@ div#image{
   width: 80px;
   height: 80px;
   float: left;
-  background-image: url('../image/light.jpg');
+  /*background-image: url('../image/light.jpg');*/
   background-repeat: no-repeat;
 }
 #image div.item.item-0{
-  background-position: 80px 80px;
+  /*background-position: 80px 80px;*/
 }
 #image div.item.item-1{
-  background-position: 0px 0px;
+  /*background-position: 0px 0px;*/
 }
 #image div.item.item-2{
-  background-position: -80px 0px;
+  /*background-position: -80px 0px;*/
 }
 #image div.item.item-3{
-  background-position: -160px 0px;
+  /*background-position: -160px 0px;*/
 }
 #image div.item.item-4{
-  background-position: 0px -80px;
+  /*background-position: 0px -80px;*/
 }
 #image div.item.item-5{
-  background-position: -80px -80px;
+  /*background-position: -80px -80px;*/
 }
 #image div.item.item-6{
-  background-position: -160px -80px;
+  /*background-position: -160px -80px;*/
 }
 #image div.item.item-7{
-  background-position: 0px -160px;
+  /*background-position: 0px -160px;*/
 }
 #image div.item.item-8{
-  background-position: -80px -160px;
+  /*background-position: -80px -160px;*/
+}
+
+#image div.item::before{
+  position: absolute;
+  width: 80px;
+  height: 80px;
+  line-height: 80px;
+  text-align: center;
+  margin: 1px;
+  background-color: #aaa;
+  font-size: 30px;
+}
+#image div.item.item-0::before{
+  /*content:"0";*/
+}
+#image div.item.item-1::before{
+  content:"1";
+}
+#image div.item.item-2::before{
+  content:"2";
+}
+#image div.item.item-3::before{
+  content:"3";
+}
+#image div.item.item-4::before{
+  content:"4";
+}
+#image div.item.item-5::before{
+  content:"5";
+}
+#image div.item.item-6::before{
+  content:"6";
+}
+#image div.item.item-7::before{
+  content:"7";
+}
+#image div.item.item-8::before{
+  content:"8";
 }
 
 /* -------------------------------------------- */
