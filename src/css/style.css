@@ -4,7 +4,7 @@ body{
 div#image{
   max-width: 250px;
   margin: 0 auto;
-  overflow: auto;
+  overflow: hidden;;
 }
 #image div.item{
   margin: 1px;
@@ -13,6 +13,9 @@ div#image{
   float: left;
   /*background-image: url('../image/light.jpg');*/
   background-repeat: no-repeat;
+}
+#image div.item:hover{
+  transform: scale(1.05);
 }
 #image div.item.item-0{
   /*background-position: 80px 80px;*/

@@ -32,7 +32,7 @@ export default class Astar{
       let nextNodes = currentNode.getNextNodes();
 
       nextNodes.forEach(function(nextNode){
-
+        
       });
 
     // }
