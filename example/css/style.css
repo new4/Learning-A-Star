@@ -1,0 +1,65 @@
+body{
+  padding-top: 100px;
+}
+div#image{
+  max-width: 250px;
+  margin: 0 auto;
+  overflow: auto;
+}
+#image div.item{
+  margin: 1px;
+  width: 80px;
+  height: 80px;
+  float: left;
+  background-image: url('../image/light.jpg');
+  background-repeat: no-repeat;
+}
+#image div.item.item-0{
+  background-position: 80px 80px;
+}
+#image div.item.item-1{
+  background-position: 0px 0px;
+}
+#image div.item.item-2{
+  background-position: -80px 0px;
+}
+#image div.item.item-3{
+  background-position: -160px 0px;
+}
+#image div.item.item-4{
+  background-position: 0px -80px;
+}
+#image div.item.item-5{
+  background-position: -80px -80px;
+}
+#image div.item.item-6{
+  background-position: -160px -80px;
+}
+#image div.item.item-7{
+  background-position: 0px -160px;
+}
+#image div.item.item-8{
+  background-position: -80px -160px;
+}
+
+/* -------------------------------------------- */
+div#action{
+  margin: 20px auto 0;
+  text-align: center;
+  overflow: auto;
+}
+div#action .btn{
+  width: 60px;
+  height: 60px;
+  border-radius: 30px;
+  border: 0;
+  color: #112233;
+  outline: none;
+}
+div#action .btn:hover{
+  cursor: pointer;
+  font-weight: bold;
+}
+div#action .btn + .btn{
+  margin-left: 20px;
+}

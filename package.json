@@ -1,0 +1,32 @@
+{
+  "name": "astarlearn",
+  "version": "1.0.0",
+  "description": "learning AStar",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/new4/Learning-A-Star.git"
+  },
+  "keywords": [
+    "AStar"
+  ],
+  "author": "new4",
+  "license": "MIT",
+  "dependencies": {
+    "gulp": "^3.9.1",
+    "gulp-typescript": "^3.0.1",
+    "typescript": "^2.0.3"
+  },
+  "devDependencies": {
+    "browserify": "^13.1.0",
+    "tsify": "^1.0.7",
+    "vinyl-source-stream": "^1.1.0"
+  },
+  "bugs": {
+    "url": "https://github.com/new4/Learning-A-Star/issues"
+  },
+  "homepage": "https://github.com/new4/Learning-A-Star#readme"
+}

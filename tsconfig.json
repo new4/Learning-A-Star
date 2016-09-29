@@ -1,0 +1,15 @@
+{
+  "files": [
+    "src/ts/game.ts",
+    "src/ts/main.ts",
+    "src/ts/node.ts",
+    "src/ts/astar.ts",
+    "src/ts/heap.ts",
+    "src/ts/util.ts"
+  ],
+  "compilerOptions": {
+        "target": "es5",
+        "listFiles": true,
+        "outDir": "dist"
+    }
+}
