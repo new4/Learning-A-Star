@@ -6,9 +6,6 @@
     DIRECTION[DIRECTION["LEFT"] = 4] = "LEFT";
 })(exports.DIRECTION || (exports.DIRECTION = {}));
 var DIRECTION = exports.DIRECTION;
-function clone() {
-}
-exports.clone = clone;
 function $id(eleId) {
     return document.getElementById(eleId);
 }

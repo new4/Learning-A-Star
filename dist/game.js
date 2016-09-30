@@ -31,14 +31,21 @@ var Game = (function () {
             imgItems[i].className = "item item-" + node.value[i];
         }
     };
+    Game.prototype.moveImg = function (index) {
+        console.log("index - - ", index);
+    };
     Game.prototype.initDOM = function () {
         var game = this;
         game.gameContainerEle = util_1.$id(game.gameContainerId);
         game.imgContainerEle = util_1.$createEle('div', game.imgContainerId);
         game.actionContainerEle = util_1.$createEle('div', game.actionContainerId);
-        for (var i = 1; i < Math.pow(game.scale, 2); i++) {
+        var _loop_1 = function(i) {
             var ele = util_1.$createEle('div', undefined, "item item-" + i);
+            ele.addEventListener('click', function () { game.moveImg(i); });
             game.imgContainerEle.appendChild(ele);
+        };
+        for (var i = 1; i < Math.pow(game.scale, 2); i++) {
+            _loop_1(i);
         }
         game.imgContainerEle.appendChild(util_1.$createEle('div', undefined, "item item-0"));
         ["MIX", "START"].forEach(function (item, index, array) {

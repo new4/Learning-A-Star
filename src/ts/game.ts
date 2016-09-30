@@ -47,6 +47,10 @@ export default class Game{
       imgItems[i].className = `item item-${node.value[i]}`;
     }
   }
+  moveImg( index ){
+    console.log( "index - - ", index );
+    // console.log( this.zeroIndex );
+  }
   // private function
   // ---------------
   private initDOM(){
@@ -57,6 +61,7 @@ export default class Game{
 
     for ( let i = 1; i < Math.pow( game.scale, 2); i ++ ){
       let ele = $createEle( 'div', undefined, `item item-${i}` );
+      ele.addEventListener( 'click', function(){ game.moveImg(i) } );
       game.imgContainerEle.appendChild( ele );
     }
     game.imgContainerEle.appendChild( $createEle( 'div', undefined, "item item-0" ) );

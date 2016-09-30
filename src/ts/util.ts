@@ -1,7 +1,7 @@
 export enum DIRECTION  { UP = 1, RIGHT, DOWN, LEFT }
 
-export function clone(){
-
+export interface belongTo{
+    [propName: string]: number;
 }
 
 export function $id(eleId: string){

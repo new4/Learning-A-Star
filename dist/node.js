@@ -5,9 +5,11 @@ var Node = (function () {
         this.scale = scale;
         this.value = this.createNodeValueByScale(scale);
         this.zeroIndex = Math.pow(scale, 2) - 1;
+        this.F = 0;
+        this.currentCost = 0;
     }
     Node.prototype.shuffle = function () {
-        for (var i = 0; i < 1000; i++) {
+        for (var i = 0; i < 5; i++) {
             var direction = Math.floor(Math.random() * 4 + 1);
             this.moveTo(direction);
         }
@@ -65,6 +67,34 @@ var Node = (function () {
                 return false;
         }
     };
+    Node.prototype.getHeuristicToTarget = function (targetNode) {
+        var result = 0;
+        var diff = 0;
+        var i = 0, len = this.value.length;
+        for (; i < len; i++) {
+            if (this.value[i] !== i + 1)
+                diff++;
+        }
+        var manhatten = 0;
+        for (i = 0; i < len; i++) {
+            var v = this.value[i];
+            if (v !== 0) {
+                var row = Math.floor(i / this.scale);
+                var col = i % this.scale;
+                var _row = Math.floor(v / this.scale);
+                var _col = v % this.scale;
+                manhatten += Math.abs(row - _row) + Math.abs(col - _col);
+            }
+        }
+        result = 5 * manhatten + 1 * diff;
+        return result;
+    };
+    Node.prototype.getCurrentCost = function () {
+        return this.currentCost;
+    };
+    Node.prototype.getCostToNext = function () {
+        return 1;
+    };
     Node.prototype.createNodeValueByScale = function (scale) {
         var val = [];
         for (var i = 1; i < Math.pow(scale, 2); i++) {
@@ -81,6 +111,8 @@ var Node = (function () {
         newNode.value = node.value.slice(0);
         newNode.zeroIndex = node.zeroIndex;
         return newNode;
+    };
+    Node.costFromN2N = function (fromNode, toNode) {
     };
     return Node;
 }());

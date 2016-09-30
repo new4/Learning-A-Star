@@ -5,17 +5,22 @@ export default class Node{
   zeroIndex: number
   scale: number
   parent: Node
+  F: number
+  currentCost: number
   constructor( scale: number ) {
     this.scale = scale;
     this.value = this.createNodeValueByScale( scale );
     this.zeroIndex = Math.pow(scale, 2) - 1;
+
+    // this.parent = new Node(this.scale);
+    this.F = 0;
+    this.currentCost = 0;
   }
 
   // public function
   // ---------------
-
   shuffle(){
-    for( let i = 0; i < 1000; i ++ ){
+    for( let i = 0; i < 5; i ++ ){
       let direction = Math.floor(Math.random() * 4 + 1);
       this.moveTo( direction );
     }
@@ -74,6 +79,42 @@ export default class Node{
         return false;
     }
   }
+  getHeuristicToTarget(targetNode: Node): number{
+    let result: number = 0;
+
+    let diff: number = 0;
+    let i = 0,
+        len = this.value.length;
+
+    for ( ; i < len; i ++ ){
+      if ( this.value[i] !== i + 1 ) diff ++;
+    }
+
+    let manhatten: number = 0;
+    for ( i = 0; i < len; i ++ ){
+      let v = this.value[i];
+      if( v !== 0 ){
+        // now in
+        let row = Math.floor( i/this.scale );
+        let col = i%this.scale;
+        // should in
+        let _row = Math.floor( v/this.scale );
+        let _col = v%this.scale;
+
+        manhatten += Math.abs( row - _row ) + Math.abs( col - _col );
+      }
+    }
+
+    result = 5*manhatten + 1*diff;
+
+    return result;
+  }
+  getCurrentCost(): number{
+    return this.currentCost;
+  }
+  getCostToNext(): number{
+    return 1;
+  }
   // private function
   // ----------------
   private createNodeValueByScale( scale: number ){
@@ -84,7 +125,6 @@ export default class Node{
     val.push( 0 );
     return val;
   }
-
   // static function
   // ---------------
   static isSame( currentNode: Node, targetNode: Node ){
@@ -95,5 +135,9 @@ export default class Node{
     newNode.value = node.value.slice(0);
     newNode.zeroIndex = node.zeroIndex;
     return newNode;
+  }
+  // cost from one node to another node
+  static costFromN2N( fromNode: Node, toNode: Node ){
+
   }
 }
