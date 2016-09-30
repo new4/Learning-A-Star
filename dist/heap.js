@@ -1,6 +1,8 @@
 "use strict";
 var Heap = (function () {
     function Heap(nodeList, key) {
+        this.heap = [];
+        this.b_heap = {};
         this.heap = nodeList;
         this.key = key;
         this.update();
@@ -13,7 +15,6 @@ var Heap = (function () {
         if (this.isEmpty())
             return;
         var result = this.heap.shift();
-        console.log("this.heap", this.heap);
         !this.isEmpty() && this.update();
         return result;
     };
@@ -36,7 +37,7 @@ var Heap = (function () {
     Heap.prototype.sink = function (index) {
         console.log(" ---------- sink " + index + " ----------");
         if (index >= Math.floor(this.heap.length / 2))
-            return console.log(" sink stop!*********");
+            return;
         var value = this.heap[index][this.key];
         var _a = this.getChildIndex(index), left = _a[0], right = _a[1];
         if (left && this.heap[left] && this.heap[left][this.key] < value)

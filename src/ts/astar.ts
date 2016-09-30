@@ -27,9 +27,6 @@ export default class Astar{
     let astar = this;
     let count = 0;
     while ( !Node.isSame( astar.openList.top(), astar.targetNode ) && !astar.openList.isEmpty() ){
-      console.log( "openlist - ", astar.openList );
-      console.log( "closedList - ", astar.closedList );
-
       let currentNode: Node;
 
       do{

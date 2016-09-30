@@ -14,8 +14,6 @@ var Astar = (function () {
         var astar = this;
         var count = 0;
         var _loop_1 = function() {
-            console.log("openlist - ", astar.openList);
-            console.log("closedList - ", astar.closedList);
             var currentNode;
             do {
                 if (astar.openList.isEmpty())

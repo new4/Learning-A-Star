@@ -2,8 +2,8 @@ import Node from './node';
 import { belongTo } from './util';
 // Heap On Top
 export default class Heap{
-  heap: Node[]
-  b_heap: belongTo
+  heap: Node[] = []
+  b_heap: belongTo = {}
   key: string
   constructor( nodeList: Node[], key: string ){
     this.heap = nodeList;
@@ -21,7 +21,6 @@ export default class Heap{
   pop(){
     if ( this.isEmpty() ) return;
     let result = this.heap.shift();
-    console.log( "this.heap", this.heap );
     !this.isEmpty() && this.update();
     return result;
   }
@@ -49,10 +48,11 @@ export default class Heap{
   private sink(index: number){
     console.log( ` ---------- sink ${index} ----------` );
 
-    if( index >= Math.floor( this.heap.length/2 ) ) return console.log( " sink stop!*********" ) ;
+    if( index >= Math.floor( this.heap.length/2 ) ) return;
 
     let value = this.heap[index][this.key];
     let [left, right] = this.getChildIndex(index);
+
     if ( left && this.heap[left] && this.heap[left][this.key] < value ) this.swap( index, left );
     if ( right && this.heap[right] && this.heap[right][this.key] < value ) this.swap( index, right );
   }
