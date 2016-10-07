@@ -1,22 +1,21 @@
 "use strict";
 var Heap = (function () {
-    function Heap(nodeList, key) {
+    function Heap(heapArr) {
         this.heap = [];
-        this.b_heap = {};
-        this.heap = nodeList;
-        this.key = key;
-        this.update();
+        this.heap = [];
+        for (var i = 0, len = heapArr.length; i < len; i++) {
+            this.push(heapArr[i]);
+        }
     }
     Heap.prototype.get = function (index) {
         if (index >= 0 && index < this.heap.length) {
             return this.heap[index];
         }
     };
-    Heap.prototype.set = function (index) {
-    };
     Heap.prototype.push = function (node) {
         this.heap.push(node);
         this.goUp(this.heap.length - 1);
+        console.log("this.heap -- ", this.heap);
     };
     Heap.prototype.pop = function () {
         if (this.isEmpty())
@@ -38,26 +37,17 @@ var Heap = (function () {
     Heap.prototype.getValue = function (index) {
         if (index < 0 || index >= this.heap.length)
             return;
-        return this.heap[index][this.key];
+        return this.heap[index];
     };
     Heap.prototype.isEmpty = function () {
         return !this.heap.length;
     };
-    Heap.prototype.has = function (node) {
-        var queryStr = node.value.toString();
-        return !!this.b_heap[queryStr];
-    };
-    Heap.prototype.update = function () {
-        for (var i = Math.floor(this.heap.length / 2); i > -1; i--) {
-            this.goDown(i);
-        }
-    };
     Heap.prototype.goUp = function (index) {
         var heap = this;
         var value = heap.getValue(index), parent = heap.getParentIndex(index);
-        if (!parent)
+        if (parent === undefined)
             return;
-        if (heap.getValue(parent) < heap.getValue(index)) {
+        if (heap.getValue(parent) > heap.getValue(index)) {
             this.swap(index, parent);
             this.goUp(parent);
         }
@@ -67,13 +57,13 @@ var Heap = (function () {
         var value = heap.getValue(index), _a = heap.getChildIndex(index), left = _a[0], right = _a[1];
         if (left && right) {
             var swapIndex = heap.getValue(left) < heap.getValue(right) ? left : right;
-            if (heap.getValue[swapIndex] < heap.getValue[index]) {
+            if (heap.getValue(swapIndex) < value) {
                 heap.swap(index, swapIndex);
                 heap.goDown(swapIndex);
             }
         }
         else if (left !== null) {
-            if (heap.getValue[left] < heap.getValue[index]) {
+            if (heap.getValue(left) < value) {
                 heap.swap(index, left);
                 heap.goDown(left);
             }

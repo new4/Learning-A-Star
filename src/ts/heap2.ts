@@ -1,14 +1,11 @@
-import Node from './node';
-import { belongTo } from './util';
 // Heap On Top
 export default class Heap{
-  heap: Node[] = []
-  b_heap: belongTo = {}
-  key: string
-  constructor( nodeList: Node[], key: string ){
-    this.heap = nodeList;
-    this.key = key;
-    this.update();
+  heap: number[] = []
+  constructor( heapArr: number[] ){
+    this.heap = [];
+    for ( let i = 0, len = heapArr.length; i < len; i ++ ){
+      this.push( heapArr[i] );
+    }
   }
 
   // public function
@@ -18,12 +15,10 @@ export default class Heap{
       return this.heap[ index ];
     }
   }
-  set( index: number ){
-
-  }
-  push( node: Node ){
-    this.heap.push(node);
+  push( node: number ){
+    this.heap.push( node );
     this.goUp( this.heap.length - 1 );
+    console.log( "this.heap -- ", this.heap );
   }
   pop(){
     if ( this.isEmpty() ) return;
@@ -36,40 +31,27 @@ export default class Heap{
   remove( index: number ){
     if( index < 0 || index >= this.heap.length ) return;
   }
-
   top(){
     if ( this.heap[0] ) return this.heap[0];
   }
-
   // 获取通过 key 指定的值
   getValue( index: number ){
     if( index < 0 || index >= this.heap.length ) return;
-    return this.heap[index][this.key];
+    return this.heap[index];
   }
-
   isEmpty(){
     return !this.heap.length;
   }
-
-  has( node: Node ){
-    let queryStr = node.value.toString();
-    return !!this.b_heap[queryStr];
-  }
   // private function
   // ---------------
-  private update(){
-    for ( let i = Math.floor( this.heap.length/2 ); i > -1; i -- ){
-      this.goDown(i);
-    }
-  }
   private goUp(index: number){
     let heap = this;
     let value = heap.getValue(index),
         parent = heap.getParentIndex(index);
 
-    if ( !parent ) return;
+    if ( parent === undefined ) return;
 
-    if ( heap.getValue( parent ) < heap.getValue( index ) ){
+    if ( heap.getValue( parent ) > heap.getValue( index ) ){
       this.swap( index, parent );
       this.goUp( parent );
     }
@@ -81,12 +63,12 @@ export default class Heap{
 
     if ( left && right ){
       let swapIndex = heap.getValue(left) < heap.getValue(right) ? left : right;
-      if ( heap.getValue[ swapIndex ] < heap.getValue[ index ] ) {
+      if ( heap.getValue(swapIndex) < value ) {
         heap.swap( index, swapIndex );
         heap.goDown( swapIndex );
       }
     } else if ( left !== null ) {
-      if ( heap.getValue[ left ] < heap.getValue[ index ] ) {
+      if ( heap.getValue(left) < value ) {
         heap.swap( index, left );
         heap.goDown( left );
       }
