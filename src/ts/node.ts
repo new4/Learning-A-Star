@@ -6,7 +6,9 @@ export default class Node{
   scale: number
   parent: Node
   F: number
-  currentCost: number
+  G: number
+  fromDir: number
+  toDir: number
   constructor( scale: number, initArr?: number[] ) {
     this.scale = scale;
     this.value = initArr ? initArr : this.createNodeValueByScale( scale );
@@ -14,7 +16,7 @@ export default class Node{
 
     // this.parent = new Node(this.scale);
     this.F = 0;
-    this.currentCost = 0;
+    this.G = 0;
   }
 
   // public function
@@ -97,11 +99,11 @@ export default class Node{
   }
 
   getG(){
-    return this.currentCost;
+    return this.G;
   }
 
   setG( value: number ){
-    this.currentCost = value;
+    this.G = value;
   }
 
   getH( targetNode: Node ){

@@ -16,6 +16,7 @@ var Heap = (function () {
     };
     Heap.prototype.push = function (node) {
         this.heap.push(node);
+        this.setBHeap(this.heap.length - 1);
         this.goUp(this.heap.length - 1);
     };
     Heap.prototype.pop = function () {
@@ -24,6 +25,7 @@ var Heap = (function () {
         var result;
         this.swap(0, this.heap.length - 1);
         result = this.heap.pop();
+        this.removeBHeap(result.getValStr());
         !this.isEmpty() && this.goDown(0);
         return result;
     };
@@ -41,11 +43,7 @@ var Heap = (function () {
         return !this.heap.length;
     };
     Heap.prototype.getItemIndex = function (node) {
-        var i = 0, len = this.heap.length;
-        for (; i < len; i++) {
-            if (this.heap[i].getValStr() === node.getValStr())
-                return i;
-        }
+        return this.b_heap[node.getValStr()];
     };
     Heap.prototype.getValue = function (index) {
         if (index < 0 || index >= this.heap.length)
@@ -96,6 +94,14 @@ var Heap = (function () {
         var tmp = this.heap[index1];
         this.heap[index1] = this.heap[index2];
         this.heap[index2] = tmp;
+        this.setBHeap(index1);
+        this.setBHeap(index2);
+    };
+    Heap.prototype.setBHeap = function (index) {
+        this.b_heap[this.heap[index].getValStr()] = index;
+    };
+    Heap.prototype.removeBHeap = function (str) {
+        delete this.b_heap[str];
     };
     return Heap;
 }());

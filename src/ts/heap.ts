@@ -33,6 +33,7 @@ export default class Heap{
    */
   push( node: Node ){
     this.heap.push( node );
+    this.setBHeap( this.heap.length - 1 );
     this.goUp( this.heap.length - 1 );
   }
 
@@ -45,6 +46,7 @@ export default class Heap{
     let result;
     this.swap( 0, this.heap.length - 1 );
     result = this.heap.pop();
+    this.removeBHeap( result.getValStr() );
     !this.isEmpty() && this.goDown(0);
     return result;
   }
@@ -78,11 +80,7 @@ export default class Heap{
    * 判断堆中是否有元素 node
    */
   getItemIndex( node: Node ){
-    let i = 0,
-        len = this.heap.length;
-    for ( ; i < len; i ++ ){
-      if ( this.heap[i].getValStr() === node.getValStr() ) return i;
-    }
+    return this.b_heap[ node.getValStr() ];
   }
 
   // private function
@@ -169,5 +167,14 @@ export default class Heap{
     let tmp = this.heap[index1];
     this.heap[index1] = this.heap[index2];
     this.heap[index2] = tmp;
+
+    this.setBHeap( index1 );
+    this.setBHeap( index2 );
+  }
+  private setBHeap( index: number ){
+    this.b_heap[ this.heap[ index ].getValStr() ] = index;
+  }
+  private removeBHeap( str: string ){
+    delete this.b_heap[ str ];
   }
 }

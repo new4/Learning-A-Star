@@ -6,7 +6,7 @@ var Node = (function () {
         this.value = initArr ? initArr : this.createNodeValueByScale(scale);
         this.zeroIndex = Math.pow(scale, 2) - 1;
         this.F = 0;
-        this.currentCost = 0;
+        this.G = 0;
     }
     Node.prototype.getValStr = function () {
         return this.value.toString();
@@ -77,10 +77,10 @@ var Node = (function () {
         this.F = value;
     };
     Node.prototype.getG = function () {
-        return this.currentCost;
+        return this.G;
     };
     Node.prototype.setG = function (value) {
-        this.currentCost = value;
+        this.G = value;
     };
     Node.prototype.getH = function (targetNode) {
         var result = 0;

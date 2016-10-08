@@ -25,20 +25,22 @@ export default class Astar{
   run(){
     console.time( "AStar Run !" );
     let astar = this;
-    let count = 0;
-
     while ( !Node.isSame( astar.openList.top(), astar.targetNode ) ){
-      let currentNode: Node = astar.openList.pop();
+      let currentNode = astar.openList.pop();
       astar.closedList.push( currentNode );
       astar.b_closedList[ currentNode.getValStr() ] = 1;
 
       let nextNodes = currentNode.getNextNodes();
 
-      count ++;
-
       nextNodes.forEach(function(nextNode){
         let cost = currentNode.getG() + currentNode.getCostToNext();
+
+        console.log( nextNode.getValStr() + ' cost = ' + cost + " -- nextG = " + nextNode.getG() );
+
+        console.time( "getIndex" );
         let index =  astar.openList.getItemIndex( nextNode );
+        console.timeEnd( "getIndex" );
+
         if ( index !== undefined && cost < nextNode.getG() ){
           console.log( "next 1" );
           astar.openList.remove( index );

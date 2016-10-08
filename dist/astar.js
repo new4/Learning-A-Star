@@ -12,16 +12,17 @@ var Astar = (function () {
     Astar.prototype.run = function () {
         console.time("AStar Run !");
         var astar = this;
-        var count = 0;
         var _loop_1 = function() {
             var currentNode = astar.openList.pop();
             astar.closedList.push(currentNode);
             astar.b_closedList[currentNode.getValStr()] = 1;
             var nextNodes = currentNode.getNextNodes();
-            count++;
             nextNodes.forEach(function (nextNode) {
                 var cost = currentNode.getG() + currentNode.getCostToNext();
+                console.log(nextNode.getValStr() + ' cost = ' + cost + " -- nextG = " + nextNode.getG());
+                console.time("getIndex");
                 var index = astar.openList.getItemIndex(nextNode);
+                console.timeEnd("getIndex");
                 if (index !== undefined && cost < nextNode.getG()) {
                     console.log("next 1");
                     astar.openList.remove(index);
