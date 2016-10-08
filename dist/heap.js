@@ -3,16 +3,16 @@ var Heap = (function () {
     function Heap(nodeList, key) {
         this.heap = [];
         this.b_heap = {};
-        this.heap = nodeList;
         this.key = key;
-        this.update();
+        var i = 0, len = nodeList.length;
+        for (; i < len; i++) {
+            this.push(nodeList[i]);
+        }
     }
     Heap.prototype.get = function (index) {
         if (index >= 0 && index < this.heap.length) {
-            return this.heap[index];
+            return this.heap[index][this.key];
         }
-    };
-    Heap.prototype.set = function (index) {
     };
     Heap.prototype.push = function (node) {
         this.heap.push(node);
@@ -30,56 +30,47 @@ var Heap = (function () {
     Heap.prototype.remove = function (index) {
         if (index < 0 || index >= this.heap.length)
             return;
+        this.swap(0, index);
+        this.pop();
+        this.goUp(index);
     };
     Heap.prototype.top = function () {
-        if (this.heap[0])
-            return this.heap[0];
+        return this.heap.length && this.heap[0];
+    };
+    Heap.prototype.isEmpty = function () {
+        return !this.heap.length;
+    };
+    Heap.prototype.getItemIndex = function (node) {
+        var i = 0, len = this.heap.length;
+        for (; i < len; i++) {
+            if (this.heap[i].getValStr() === node.getValStr())
+                return i;
+        }
     };
     Heap.prototype.getValue = function (index) {
         if (index < 0 || index >= this.heap.length)
             return;
         return this.heap[index][this.key];
     };
-    Heap.prototype.isEmpty = function () {
-        return !this.heap.length;
-    };
-    Heap.prototype.has = function (node) {
-        var queryStr = node.value.toString();
-        return !!this.b_heap[queryStr];
-    };
-    Heap.prototype.update = function () {
-        for (var i = Math.floor(this.heap.length / 2); i > -1; i--) {
-            this.goDown(i);
-        }
-    };
     Heap.prototype.goUp = function (index) {
-        var heap = this;
-        var value = heap.getValue(index), parent = heap.getParentIndex(index);
-        if (!parent)
+        var value = this.getValue(index), parent = this.getParentIndex(index);
+        if (parent === undefined)
             return;
-        if (heap.getValue(parent) < heap.getValue(index)) {
+        if (this.getValue(parent) > this.getValue(index)) {
             this.swap(index, parent);
             this.goUp(parent);
         }
     };
     Heap.prototype.goDown = function (index) {
-        var heap = this;
-        var value = heap.getValue(index), _a = heap.getChildIndex(index), left = _a[0], right = _a[1];
-        if (left && right) {
-            var swapIndex = heap.getValue(left) < heap.getValue(right) ? left : right;
-            if (heap.getValue[swapIndex] < heap.getValue[index]) {
-                heap.swap(index, swapIndex);
-                heap.goDown(swapIndex);
-            }
+        var value = this.getValue(index), _a = this.getChildIndex(index), left = _a[0], right = _a[1], swapIndex = left;
+        if (left === null)
+            return;
+        if (right) {
+            swapIndex = this.getValue(left) < this.getValue(right) ? left : right;
         }
-        else if (left !== null) {
-            if (heap.getValue[left] < heap.getValue[index]) {
-                heap.swap(index, left);
-                heap.goDown(left);
-            }
-        }
-        else {
-            console.log("go down: no children!");
+        if (this.getValue(swapIndex) < value) {
+            this.swap(index, swapIndex);
+            this.goDown(swapIndex);
         }
     };
     Heap.prototype.getParentIndex = function (index) {
@@ -101,10 +92,10 @@ var Heap = (function () {
             return [null, null];
         }
     };
-    Heap.prototype.swap = function (parentIndex, childIndex) {
-        var tmp = this.heap[parentIndex];
-        this.heap[parentIndex] = this.heap[childIndex];
-        this.heap[childIndex] = tmp;
+    Heap.prototype.swap = function (index1, index2) {
+        var tmp = this.heap[index1];
+        this.heap[index1] = this.heap[index2];
+        this.heap[index2] = tmp;
     };
     return Heap;
 }());

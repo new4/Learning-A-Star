@@ -10,35 +10,42 @@ var Astar = (function () {
         this.b_closedList = {};
     }
     Astar.prototype.run = function () {
-        console.log("AStar Run !");
+        console.time("AStar Run !");
         var astar = this;
         var count = 0;
         var _loop_1 = function() {
-            var currentNode;
-            do {
-                if (astar.openList.isEmpty())
-                    return { value: console.log(" empty! ") };
-                currentNode = astar.openList.pop();
-            } while (astar.b_closedList[currentNode.value.toString()] === 1);
+            var currentNode = astar.openList.pop();
             astar.closedList.push(currentNode);
-            astar.b_closedList[currentNode.value.toString()] = 1;
+            astar.b_closedList[currentNode.getValStr()] = 1;
             var nextNodes = currentNode.getNextNodes();
             count++;
             nextNodes.forEach(function (nextNode) {
-                nextNode.F = currentNode.getCurrentCost() + currentNode.getCostToNext() + nextNode.getHeuristicToTarget(astar.targetNode);
-                nextNode.currentCost = count;
-                astar.openList.push(nextNode);
+                var cost = currentNode.getG() + currentNode.getCostToNext();
+                var index = astar.openList.getItemIndex(nextNode);
+                if (index !== undefined && cost < nextNode.getG()) {
+                    console.log("next 1");
+                    astar.openList.remove(index);
+                }
+                if (astar.isBelongToClosed(nextNode.getValStr()) && cost < nextNode.getG()) {
+                    console.log("next 2");
+                }
+                if (index === undefined && !astar.isBelongToClosed(nextNode.getValStr())) {
+                    console.log("next 3");
+                    nextNode.setG(cost);
+                    nextNode.setF(nextNode.getG() + nextNode.getH(astar.targetNode));
+                    astar.openList.push(nextNode);
+                }
             });
         };
-        while (!node_1.default.isSame(astar.openList.top(), astar.targetNode) && !astar.openList.isEmpty()) {
-            var state_1 = _loop_1();
-            if (typeof state_1 === "object") return state_1.value;
+        while (!node_1.default.isSame(astar.openList.top(), astar.targetNode)) {
+            _loop_1();
         }
+        console.timeEnd("AStar Run !");
         console.log(" astar - ", astar);
         var tailNode = astar.openList.top();
         var p = [];
         while (tailNode) {
-            p.push(tailNode.value.toString());
+            p.unshift(tailNode.getValStr());
             tailNode = tailNode.parent;
         }
         console.log(" p ----- ", p);
@@ -47,6 +54,8 @@ var Astar = (function () {
     };
     Astar.prototype.isBelongToClosed = function (str) {
         return !!this.b_closedList[str];
+    };
+    Astar.prototype.removeFromClosed = function (str) {
     };
     return Astar;
 }());

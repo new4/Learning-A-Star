@@ -1,17 +1,12 @@
-import Node from './node';
-import { belongTo } from './util';
-// Heap On Top
-export default class Heap{
-  heap: Node[] = []
-  b_heap: belongTo = {}
-  key: string
-  constructor( nodeList: Node[], key: string ){
-    this.key = key;
+/**
+ * 小顶堆
+ */
+export default class minHeap{
+  heap: number[] = []
+  constructor( heapArr: number[] ){
     // 用依次插入的方式构造初始的小顶堆
-    let i = 0,
-        len = nodeList.length;
-    for ( ; i < len; i ++ ){
-      this.push( nodeList[i] );
+    for ( let i = 0, len = heapArr.length; i < len; i ++ ){
+      this.push( heapArr[i] );
     }
   }
 
@@ -23,7 +18,7 @@ export default class Heap{
    */
   get( index: number ){
     if ( index >= 0 && index < this.heap.length ){
-      return this.heap[ index ][ this.key ];
+      return this.heap[ index ];
     }
   }
 
@@ -31,8 +26,8 @@ export default class Heap{
    * 向堆中插入一个新的元素并调整堆
    * 新元素从数组尾部插入，然后对新元素执行上浮调整
    */
-  push( node: Node ){
-    this.heap.push( node );
+  push( item: number ){
+    this.heap.push( item );
     this.goUp( this.heap.length - 1 );
   }
 
@@ -64,7 +59,7 @@ export default class Heap{
    * 获取堆顶元素
    */
   top(){
-    return this.heap.length && this.heap[0];
+    return this.getValue(0);
   }
 
   /**
@@ -74,26 +69,15 @@ export default class Heap{
     return !this.heap.length;
   }
 
-  /**
-   * 判断堆中是否有元素 node
-   */
-  getItemIndex( node: Node ){
-    let i = 0,
-        len = this.heap.length;
-    for ( ; i < len; i ++ ){
-      if ( this.heap[i].getValStr() === node.getValStr() ) return i;
-    }
-  }
-
   // private function
-  // ---------------
+  // ----------------
 
   /**
    * 返回堆中下标为 index 的元素
    */
   private getValue( index: number ){
     if( index < 0 || index >= this.heap.length ) return;
-    return this.heap[index][this.key];
+    return this.heap[index];
   }
 
   /**

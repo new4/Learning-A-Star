@@ -7,9 +7,9 @@ export default class Node{
   parent: Node
   F: number
   currentCost: number
-  constructor( scale: number ) {
+  constructor( scale: number, initArr?: number[] ) {
     this.scale = scale;
-    this.value = this.createNodeValueByScale( scale );
+    this.value = initArr ? initArr : this.createNodeValueByScale( scale );
     this.zeroIndex = Math.pow(scale, 2) - 1;
 
     // this.parent = new Node(this.scale);
@@ -19,12 +19,18 @@ export default class Node{
 
   // public function
   // ---------------
+
+  getValStr(){
+    return this.value.toString();
+  }
+
   shuffle(){
     for( let i = 0; i < 5; i ++ ){
       let direction = Math.floor(Math.random() * 4 + 1);
       this.moveTo( direction );
     }
   }
+
   moveTo( direction: number ){
     if ( !this.canMoveTo( direction ) ) return;
     let targetIndex;
@@ -49,6 +55,7 @@ export default class Node{
     this.value[ targetIndex ] = 0;
     this.zeroIndex = targetIndex;
   }
+
   getNextNodes(){
     let node = this;
     let nextNodes: Node[] = [];
@@ -62,6 +69,7 @@ export default class Node{
     });
     return nextNodes;
   }
+
   canMoveTo( direction: number ){
     let row = Math.floor( this.zeroIndex / this.scale );
     let col = this.zeroIndex % this.scale;
@@ -79,7 +87,24 @@ export default class Node{
         return false;
     }
   }
-  getHeuristicToTarget(targetNode: Node): number{
+
+  getCostToNext(): number{
+    return 1;
+  }
+
+  setF( value: number ){
+    this.F = value;
+  }
+
+  getG(){
+    return this.currentCost;
+  }
+
+  setG( value: number ){
+    this.currentCost = value;
+  }
+
+  getH( targetNode: Node ){
     let result: number = 0;
 
     let diff: number = 0;
@@ -109,12 +134,7 @@ export default class Node{
 
     return result;
   }
-  getCurrentCost(): number{
-    return this.currentCost;
-  }
-  getCostToNext(): number{
-    return 1;
-  }
+
   // private function
   // ----------------
   private createNodeValueByScale( scale: number ){

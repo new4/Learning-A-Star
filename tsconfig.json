@@ -5,6 +5,7 @@
     "src/ts/node.ts",
     "src/ts/astar.ts",
     "src/ts/heap.ts",
+    "src/ts/min-heap.ts",
     "src/ts/util.ts"
   ],
   "compilerOptions": {

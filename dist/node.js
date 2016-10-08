@@ -1,13 +1,16 @@
 "use strict";
 var util_1 = require('./util');
 var Node = (function () {
-    function Node(scale) {
+    function Node(scale, initArr) {
         this.scale = scale;
-        this.value = this.createNodeValueByScale(scale);
+        this.value = initArr ? initArr : this.createNodeValueByScale(scale);
         this.zeroIndex = Math.pow(scale, 2) - 1;
         this.F = 0;
         this.currentCost = 0;
     }
+    Node.prototype.getValStr = function () {
+        return this.value.toString();
+    };
     Node.prototype.shuffle = function () {
         for (var i = 0; i < 5; i++) {
             var direction = Math.floor(Math.random() * 4 + 1);
@@ -67,7 +70,19 @@ var Node = (function () {
                 return false;
         }
     };
-    Node.prototype.getHeuristicToTarget = function (targetNode) {
+    Node.prototype.getCostToNext = function () {
+        return 1;
+    };
+    Node.prototype.setF = function (value) {
+        this.F = value;
+    };
+    Node.prototype.getG = function () {
+        return this.currentCost;
+    };
+    Node.prototype.setG = function (value) {
+        this.currentCost = value;
+    };
+    Node.prototype.getH = function (targetNode) {
         var result = 0;
         var diff = 0;
         var i = 0, len = this.value.length;
@@ -88,12 +103,6 @@ var Node = (function () {
         }
         result = 5 * manhatten + 1 * diff;
         return result;
-    };
-    Node.prototype.getCurrentCost = function () {
-        return this.currentCost;
-    };
-    Node.prototype.getCostToNext = function () {
-        return 1;
     };
     Node.prototype.createNodeValueByScale = function (scale) {
         var val = [];
