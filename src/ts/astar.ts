@@ -34,12 +34,7 @@ export default class Astar{
 
       nextNodes.forEach(function(nextNode){
         let cost = currentNode.getG() + currentNode.getCostToNext();
-
-        console.log( nextNode.getValStr() + ' cost = ' + cost + " -- nextG = " + nextNode.getG() );
-
-        console.time( "getIndex" );
         let index =  astar.openList.getItemIndex( nextNode );
-        console.timeEnd( "getIndex" );
 
         if ( index !== undefined && cost < nextNode.getG() ){
           console.log( "next 1" );
