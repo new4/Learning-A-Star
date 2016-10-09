@@ -82,6 +82,9 @@ export default class Node{
     return nextNodes;
   }
 
+  /**
+   * 判断当前节点（节点中的 0 位）是否可以沿 direction 方向移动
+   */
   canMoveTo( direction: number ){
     let row = Math.floor( this.zeroIndex / this.scale );
     let col = this.zeroIndex % this.scale;
@@ -170,6 +173,7 @@ export default class Node{
     val.push( 0 );
     return val;
   }
+
   // static function
   // ---------------
 

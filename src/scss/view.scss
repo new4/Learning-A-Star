@@ -1,0 +1,37 @@
+div#image{
+  margin: 0 auto;
+  overflow: hidden;
+
+  .item{
+    margin: 1px;
+    border: 0;
+    padding: 0;
+    width: 80px;
+    height: 80px;
+    float: left;
+    background-repeat: no-repeat;
+
+    &:hover{
+      transform: scale(1.05);
+    }
+
+    &::before{
+      content: attr(data-pos);
+      position: absolute;
+      width: 80px;
+      height: 80px;
+      line-height: 80px;
+      text-align: center;
+      margin: 1px;
+      background-color: #aaa;
+      font-size: 30px;
+    }
+  }
+
+  .item.item-0{
+    &::before{
+      background-color: #fff;
+      content: "";
+    }
+  }
+}
