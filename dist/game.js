@@ -28,22 +28,6 @@ var Game = (function () {
             astar.run();
         }
     };
-    Game.prototype.setStatusWithNode = function (node) {
-        var imgItems = this.imgContainer.getElementsByClassName("item");
-        for (var i = 0, len = imgItems.length; i < len; i++) {
-            imgItems[i].className = "item item-" + node.value[i];
-            imgItems[i].setAttribute("data-pos", "" + node.value[i]);
-        }
-    };
-    Game.prototype.moveImg = function (e) {
-        var imgNumber = e.target.getAttribute("data-pos");
-        var nonZeroDir = this.currentNode.getNonZeroDirection();
-        if (nonZeroDir[imgNumber]) {
-            var direction = util_1.DIRECTION[("" + nonZeroDir[imgNumber])];
-            this.currentNode.moveTo(direction);
-            this.setStatusWithNode(this.currentNode);
-        }
-    };
     Game.prototype.init = function () {
         this.initImage();
         this.initOperation();
@@ -80,6 +64,22 @@ var Game = (function () {
             game.actionContainer.appendChild(ele);
         });
         game.gameContainer.appendChild(game.actionContainer);
+    };
+    Game.prototype.setStatusWithNode = function (node) {
+        var imgItems = this.imgContainer.getElementsByClassName("item");
+        for (var i = 0, len = imgItems.length; i < len; i++) {
+            imgItems[i].className = "item item-" + node.value[i];
+            imgItems[i].setAttribute("data-pos", "" + node.value[i]);
+        }
+    };
+    Game.prototype.moveImg = function (e) {
+        var imgNumber = e.target.getAttribute("data-pos");
+        var nonZeroDir = this.currentNode.getNonZeroDirection();
+        if (nonZeroDir[imgNumber]) {
+            var direction = util_1.DIRECTION[("" + nonZeroDir[imgNumber])];
+            this.currentNode.moveTo(direction);
+            this.setStatusWithNode(this.currentNode);
+        }
     };
     return Game;
 }());

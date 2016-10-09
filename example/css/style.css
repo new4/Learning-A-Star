@@ -1,6 +1,38 @@
 body {
   padding-top: 100px; }
 
+@keyframes move-up {
+  0% {
+    top: 0px; }
+  50% {
+    top: -40px; }
+  100% {
+    top: -80px; } }
+
+@keyframes move-right {
+  0% {
+    left: 0px; }
+  50% {
+    left: 40px; }
+  100% {
+    left: 80px; } }
+
+@keyframes move-left {
+  0% {
+    left: 0px; }
+  50% {
+    left: -40px; }
+  100% {
+    left: -80px; } }
+
+@keyframes move-down {
+  0% {
+    top: 0px; }
+  50% {
+    top: 40px; }
+  100% {
+    top: 80px; } }
+
 div#image {
   margin: 0 auto;
   overflow: hidden; }
@@ -27,6 +59,14 @@ div#image {
   div#image .item.item-0::before {
     background-color: #fff;
     content: ""; }
+  div#image .item.up::before {
+    animation: move-up; }
+  div#image .item.right::before {
+    animation: move-right; }
+  div#image .item.down::before {
+    animation: move-down; }
+  div#image .item.left::before {
+    animation: move-left; }
 
 div#action {
   margin: 20px auto 0;

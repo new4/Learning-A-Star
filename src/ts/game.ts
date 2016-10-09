@@ -55,30 +55,6 @@ export default class Game{
     }
   }
 
-  /**
-   * 根据节点的数组表示来更新页面中的显示状态
-   */
-  setStatusWithNode( node: Node ){
-    let imgItems = this.imgContainer.getElementsByClassName("item");
-    for ( let i = 0, len = imgItems.length; i < len; i ++ ){
-      imgItems[i].className = `item item-${node.value[i]}`;
-      imgItems[i].setAttribute( "data-pos", `${node.value[i]}` );
-    }
-  }
-
-  /**
-   * 图片块上的 click 事件处理函数，用来移动图片块
-   */
-  moveImg(e){
-    let imgNumber = e.target.getAttribute("data-pos");
-    let nonZeroDir = this.currentNode.getNonZeroDirection();
-    if ( nonZeroDir[imgNumber] ){
-      let direction = DIRECTION[ `${nonZeroDir[ imgNumber ]}` ];
-      this.currentNode.moveTo( direction );
-      this.setStatusWithNode( this.currentNode );
-    }
-  }
-
   // private function
   // ---------------
 
@@ -129,5 +105,29 @@ export default class Game{
       game.actionContainer.appendChild( ele );
     });
     game.gameContainer.appendChild( game.actionContainer );
+  }
+
+  /**
+   * 根据节点的数组表示来更新页面中的显示状态
+   */
+  private setStatusWithNode( node: Node ){
+    let imgItems = this.imgContainer.getElementsByClassName("item");
+    for ( let i = 0, len = imgItems.length; i < len; i ++ ){
+      imgItems[i].className = `item item-${node.value[i]}`;
+      imgItems[i].setAttribute( "data-pos", `${node.value[i]}` );
+    }
+  }
+
+  /**
+   * 图片块上的 click 事件处理函数，用来移动图片块
+   */
+  private moveImg(e){
+    let imgNumber = e.target.getAttribute("data-pos");
+    let nonZeroDir = this.currentNode.getNonZeroDirection();
+    if ( nonZeroDir[imgNumber] ){
+      let direction = DIRECTION[ `${nonZeroDir[ imgNumber ]}` ];
+      this.currentNode.moveTo( direction );
+      this.setStatusWithNode( this.currentNode );
+    }
   }
 }
