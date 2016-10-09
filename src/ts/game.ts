@@ -1,11 +1,12 @@
-import Node from "./node"
-import Astar from './astar'
-import { $id, $createEle } from './util'
+import Node from "./node";
+import Astar from './astar';
+import { $id, $createEle, DIRECTION } from './util';
 
 export default class Game{
-  startNode: Node
+  currentNode: Node
   targetNode: Node
   scale: number
+
   private gameContainerId: string
   private imgContainerId: string
   private actionContainerId: string
@@ -14,13 +15,17 @@ export default class Game{
   private actionContainer
 
   constructor( gameContainerId: string, scale: number ){
-    this.startNode = new Node( scale );
+    this.currentNode = new Node( scale );
     this.targetNode = new Node( scale );
     this.scale = scale;
 
     this.gameContainerId = gameContainerId;
     this.imgContainerId = "image";
     this.actionContainerId = "action";
+
+    this.gameContainer = $id( this.gameContainerId );
+    this.imgContainer = $createEle( 'div', this.imgContainerId );
+    this.actionContainer = $createEle( 'div', this.actionContainerId );
 
     this.init();
   }
@@ -33,8 +38,8 @@ export default class Game{
    * 混合，由起始节点乱序得到一个新的节点，并根据新节点设置页面中的显示状态
    */
   mix(){
-    this.startNode.shuffle();
-    this.setStatusWithNode( this.startNode );
+    this.currentNode.shuffle();
+    this.setStatusWithNode( this.currentNode );
   }
 
   /**
@@ -42,10 +47,10 @@ export default class Game{
    * 执行 A* 算法
    */
   start(){
-    if ( Node.isSame( this.startNode, this.targetNode ) ){
+    if ( Node.isSame( this.currentNode, this.targetNode ) ){
       return console.log( 'win!!!' );
     } else {
-      let astar = new Astar( this.startNode, this.targetNode );
+      let astar = new Astar( this.currentNode, this.targetNode );
       astar.run();
     }
   }
@@ -61,11 +66,17 @@ export default class Game{
     }
   }
 
-
-  moveImg( index ){
-    console.log( "index - - ", index );
-    console.log( "index - - ", this.startNode );
-
+  /**
+   * 图片块上的 click 事件处理函数，用来移动图片块
+   */
+  moveImg(e){
+    let imgNumber = e.target.getAttribute("data-pos");
+    let nonZeroDir = this.currentNode.getNonZeroDirection();
+    if ( nonZeroDir[imgNumber] ){
+      let direction = DIRECTION[ `${nonZeroDir[ imgNumber ]}` ];
+      this.currentNode.moveTo( direction );
+      this.setStatusWithNode( this.currentNode );
+    }
   }
 
   // private function
@@ -75,25 +86,35 @@ export default class Game{
    * 初始化函数
    */
   private init(){
+    this.initImage();
+    this.initOperation();
+  }
+
+  /**
+   * 拼图的图片显示部分的初始化
+   */
+  private initImage(){
     let game = this;
-    game.gameContainer = $id( game.gameContainerId );
-    game.imgContainer = $createEle( 'div', game.imgContainerId );
-    game.actionContainer = $createEle( 'div', game.actionContainerId );
-
     game.imgContainer.style.width = `${ this.scale * 82 }px`;
-
     // 节点的数组表示中的每一个数组的项对应一个格子
-    for ( let i = 1; i < Math.pow( game.scale, 2); i ++ ){
+    for ( let i = Math.pow( game.scale, 2) - 1; i > -1; i -- ){
       let ele = $createEle( 'div', undefined, `item item-${i}` );
-      ele.addEventListener( 'click', function(){ game.moveImg(i) } );
-
+      ele.addEventListener( 'click', function(e){ game.moveImg(e) } );
       ele.setAttribute( "data-pos", `${i}` );
-
-      game.imgContainer.appendChild( ele );
+      if ( i === 0 ){
+        game.imgContainer.appendChild( ele );
+      } else {
+        game.imgContainer.insertBefore( ele, game.imgContainer.firstChild );
+      }
     }
-    game.imgContainer.appendChild( $createEle( 'div', undefined, "item item-0" ) );
+    game.gameContainer.appendChild( game.imgContainer );
+  }
 
-    // 功能按钮的初始化与事件绑定
+  /**
+   * 拼图的按钮操作部分的初始化
+   */
+  private initOperation(){
+    let game = this;
     ["MIX", "START"].forEach( function(item, index, array){
       let ele = $createEle( 'button', undefined, `btn btn-${item.toLowerCase()}` );
       ele.innerHTML = item;
@@ -107,8 +128,6 @@ export default class Game{
       }
       game.actionContainer.appendChild( ele );
     });
-
-    game.gameContainer.appendChild( game.imgContainer );
     game.gameContainer.appendChild( game.actionContainer );
   }
 }

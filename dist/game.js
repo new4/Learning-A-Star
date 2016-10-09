@@ -4,24 +4,27 @@ var astar_1 = require('./astar');
 var util_1 = require('./util');
 var Game = (function () {
     function Game(gameContainerId, scale) {
-        this.startNode = new node_1.default(scale);
+        this.currentNode = new node_1.default(scale);
         this.targetNode = new node_1.default(scale);
         this.scale = scale;
         this.gameContainerId = gameContainerId;
         this.imgContainerId = "image";
         this.actionContainerId = "action";
+        this.gameContainer = util_1.$id(this.gameContainerId);
+        this.imgContainer = util_1.$createEle('div', this.imgContainerId);
+        this.actionContainer = util_1.$createEle('div', this.actionContainerId);
         this.init();
     }
     Game.prototype.mix = function () {
-        this.startNode.shuffle();
-        this.setStatusWithNode(this.startNode);
+        this.currentNode.shuffle();
+        this.setStatusWithNode(this.currentNode);
     };
     Game.prototype.start = function () {
-        if (node_1.default.isSame(this.startNode, this.targetNode)) {
+        if (node_1.default.isSame(this.currentNode, this.targetNode)) {
             return console.log('win!!!');
         }
         else {
-            var astar = new astar_1.default(this.startNode, this.targetNode);
+            var astar = new astar_1.default(this.currentNode, this.targetNode);
             astar.run();
         }
     };
@@ -32,26 +35,37 @@ var Game = (function () {
             imgItems[i].setAttribute("data-pos", "" + node.value[i]);
         }
     };
-    Game.prototype.moveImg = function (index) {
-        console.log("index - - ", index);
-        console.log("index - - ", this.startNode);
+    Game.prototype.moveImg = function (e) {
+        var imgNumber = e.target.getAttribute("data-pos");
+        var nonZeroDir = this.currentNode.getNonZeroDirection();
+        if (nonZeroDir[imgNumber]) {
+            var direction = util_1.DIRECTION[("" + nonZeroDir[imgNumber])];
+            this.currentNode.moveTo(direction);
+            this.setStatusWithNode(this.currentNode);
+        }
     };
     Game.prototype.init = function () {
+        this.initImage();
+        this.initOperation();
+    };
+    Game.prototype.initImage = function () {
         var game = this;
-        game.gameContainer = util_1.$id(game.gameContainerId);
-        game.imgContainer = util_1.$createEle('div', game.imgContainerId);
-        game.actionContainer = util_1.$createEle('div', game.actionContainerId);
         game.imgContainer.style.width = this.scale * 82 + "px";
-        var _loop_1 = function(i) {
+        for (var i = Math.pow(game.scale, 2) - 1; i > -1; i--) {
             var ele = util_1.$createEle('div', undefined, "item item-" + i);
-            ele.addEventListener('click', function () { game.moveImg(i); });
+            ele.addEventListener('click', function (e) { game.moveImg(e); });
             ele.setAttribute("data-pos", "" + i);
-            game.imgContainer.appendChild(ele);
-        };
-        for (var i = 1; i < Math.pow(game.scale, 2); i++) {
-            _loop_1(i);
+            if (i === 0) {
+                game.imgContainer.appendChild(ele);
+            }
+            else {
+                game.imgContainer.insertBefore(ele, game.imgContainer.firstChild);
+            }
         }
-        game.imgContainer.appendChild(util_1.$createEle('div', undefined, "item item-0"));
+        game.gameContainer.appendChild(game.imgContainer);
+    };
+    Game.prototype.initOperation = function () {
+        var game = this;
         ["MIX", "START"].forEach(function (item, index, array) {
             var ele = util_1.$createEle('button', undefined, "btn btn-" + item.toLowerCase());
             ele.innerHTML = item;
@@ -65,7 +79,6 @@ var Game = (function () {
             }
             game.actionContainer.appendChild(ele);
         });
-        game.gameContainer.appendChild(game.imgContainer);
         game.gameContainer.appendChild(game.actionContainer);
     };
     return Game;

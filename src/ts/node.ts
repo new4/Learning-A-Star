@@ -42,27 +42,57 @@ export default class Node{
    */
   moveTo( direction: number ){
     if ( !this.canMoveTo( direction ) ) return;
-    let targetIndex;
-    switch( direction ){
-      case DIRECTION.UP:
-        targetIndex = this.zeroIndex - this.scale;
-        break;
-      case DIRECTION.RIGHT:
-        targetIndex = this.zeroIndex + 1;
-        break;
-      case DIRECTION.DOWN:
-        targetIndex = this.zeroIndex + this.scale;
-        break;
-      case DIRECTION.LEFT:
-        targetIndex = this.zeroIndex - 1;
-        break;
-      default:
-        targetIndex = this.zeroIndex;
-    }
+    let targetIndex = this.getTargetIndex( direction );
 
     this.value[ this.zeroIndex ] = this.value[ targetIndex ];
     this.value[ targetIndex ] = 0;
     this.zeroIndex = targetIndex;
+  }
+
+  /**
+   * 获取当前节点的可能移动方向（用 0 位的移动进行表示）
+   */
+  getZeroDirection(){
+    let node = this;
+    let Direction = {};
+    [ "UP", "RIGHT", "DOWN", "LEFT" ].forEach( function(dir){
+      let _dir = DIRECTION[dir];
+      if ( node.canMoveTo( _dir ) ){
+        let targetIndex = node.getTargetIndex( _dir );
+        Direction[ dir ] = `${node.value[ targetIndex ]}`;
+      }
+    });
+    return Direction;
+  }
+
+  /**
+   * 将当前节点的可能移动方向由用 0 位的移动来表示转换成用 0 位邻接的非 0 数字的移动来进行表示
+   */
+  getNonZeroDirection(){
+    let Direction = {};
+    let zeroDir = this.getZeroDirection();
+    for ( let val in zeroDir ){
+      // let _val;
+      // switch( val ){
+      //   case "UP":
+      //     _val = "DOWN";
+      //     break;
+      //   case "RIGHT":
+      //     _val = "LEFT";
+      //     break;
+      //   case "DOWN":
+      //     _val = "UP";
+      //     break;
+      //   case "LEFT":
+      //     _val = "RIGHT";
+      //     break;
+      // }
+      // Direction[ zeroDir[ val ] ] = _val;
+
+      Direction[ zeroDir[ val ] ] = val;
+    }
+    console.log( Direction );
+    return Direction;
   }
 
   /**
@@ -156,7 +186,7 @@ export default class Node{
       }
     }
 
-    return 1*manhatten + 1000*diff;
+    return 1*manhatten + 100*diff;
   }
 
   // private function
@@ -172,6 +202,31 @@ export default class Node{
     }
     val.push( 0 );
     return val;
+  }
+
+  /**
+   * 获取当前节点中处于 0 位的方向 direction 处的邻接数字的下标
+   */
+  private getTargetIndex( direction: number ){
+    if ( !this.canMoveTo( direction ) ) return;
+    let targetIndex;
+    switch( direction ){
+      case DIRECTION.UP:
+        targetIndex = this.zeroIndex - this.scale;
+        break;
+      case DIRECTION.RIGHT:
+        targetIndex = this.zeroIndex + 1;
+        break;
+      case DIRECTION.DOWN:
+        targetIndex = this.zeroIndex + this.scale;
+        break;
+      case DIRECTION.LEFT:
+        targetIndex = this.zeroIndex - 1;
+        break;
+      default:
+        targetIndex = this.zeroIndex;
+    }
+    return targetIndex;
   }
 
   // static function
