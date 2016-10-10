@@ -69,9 +69,7 @@ export default class Astar{
       tailNode = tailNode.parent;
     }
 
-    console.log( "this.solution - ", this.solution );
-
-    this.showSolution();
+    // this.showSolution();
   }
 
   /**

@@ -15,16 +15,23 @@ export function $createEle( tagName: string, id?: string, className?: string ){
   return ele;
 };
 
-export function $replaceClass( className: string, str: string, prefix: string  ){
+export function $replaceClass( className: string, newClass: string, prefix: string  ){
   let result = "";
   let classArr = className.split( " " );
   for ( let i = 0, len = classArr.length; i < len; i ++ ){
     let index = classArr[i].indexOf( `${prefix}-` );
     if ( index !== -1 ){
-      classArr[i] = str;
+      classArr[i] = newClass;
     }
     result += `${classArr[i]} `;
   }
-  console.log( "result -- ", result );
   return result.trim();
+}
+
+export function $addClass( className: string, newClass: string ){
+
+}
+
+export function $removeClass(){
+  
 }

@@ -63,7 +63,9 @@ export default class Game{
           if ( i === -1 ){
             clearInterval( id );
           } else {
-            game.setStatusWithNode( solution[i--] );
+            game.currentNode = solution[i];
+            game.setStatusWithNode( solution[i] );
+            i--;
           }
         }, 500 );
       }
