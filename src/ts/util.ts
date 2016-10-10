@@ -14,3 +14,17 @@ export function $createEle( tagName: string, id?: string, className?: string ){
   if( className ) ele.className = className;
   return ele;
 };
+
+export function $replaceClass( className: string, str: string, prefix: string  ){
+  let result = "";
+  let classArr = className.split( " " );
+  for ( let i = 0, len = classArr.length; i < len; i ++ ){
+    let index = classArr[i].indexOf( `${prefix}-` );
+    if ( index !== -1 ){
+      classArr[i] = str;
+    }
+    result += `${classArr[i]} `;
+  }
+  console.log( "result -- ", result );
+  return result.trim();
+}

@@ -12,7 +12,7 @@ export default class Astar{
   targetNode: Node
 
   private b_closedList: belongTo = {}
-  private solution: string[] = []
+  private solution: Node[] = []
 
   constructor( startNode: Node, targetNode: Node ){
     this.startNode = startNode;
@@ -65,11 +65,13 @@ export default class Astar{
     let tailNode = astar.openList.top();
     this.solution = [];
     while( tailNode ){
-      this.solution.unshift( tailNode.getValStr() );
+      this.solution.push( tailNode );
       tailNode = tailNode.parent;
     }
 
-    // this.showSolution();
+    console.log( "this.solution - ", this.solution );
+
+    this.showSolution();
   }
 
   /**
@@ -94,12 +96,12 @@ export default class Astar{
    * 显示解决方案的具体步骤
    */
   private showSolution(){
-    let i = 0,
-        len = this.solution.length,
+    let len = this.solution.length,
+        i = len - 1,
         scale = this.targetNode.scale;
-    for ( ; i < len; i ++ ){
-      console.log( `Step ${i} ---` );
-      let item = this.solution[i].split(',');
+    for ( ; i > -1; i -- ){
+      console.log( `Step ${ len - i }: ` );
+      let item = this.solution[i].getValStr().split(',');
       for ( let j = 0; j < scale; j ++ ){
           console.log( `| ${item[ j*scale ]} ${item[ j*scale + 1 ]} ${item[ j*scale + 2 ]} |` );
       }

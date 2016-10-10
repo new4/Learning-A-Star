@@ -20,13 +20,29 @@ var Game = (function () {
         this.setStatusWithNode(this.currentNode);
     };
     Game.prototype.start = function () {
+        var game = this;
         if (node_1.default.isSame(this.currentNode, this.targetNode)) {
-            return console.log('win!!!');
+            this.win();
         }
         else {
             var astar = new astar_1.default(this.currentNode, this.targetNode);
             astar.run();
+            var solution_1 = astar.getSolution();
+            if (solution_1.length) {
+                var len = solution_1.length, i_1 = len - 1;
+                var id_1 = setInterval(function () {
+                    if (i_1 === -1) {
+                        clearInterval(id_1);
+                    }
+                    else {
+                        game.setStatusWithNode(solution_1[i_1--]);
+                    }
+                }, 500);
+            }
         }
+    };
+    Game.prototype.win = function () {
+        console.log("win!!!");
     };
     Game.prototype.init = function () {
         this.initImage();
@@ -34,9 +50,8 @@ var Game = (function () {
     };
     Game.prototype.initImage = function () {
         var game = this;
-        game.imgContainer.style.width = this.scale * 82 + "px";
         for (var i = Math.pow(game.scale, 2) - 1; i > -1; i--) {
-            var ele = util_1.$createEle('div', undefined, "item item-" + i);
+            var ele = util_1.$createEle('div', undefined, "item item-" + i + " pos-" + i);
             ele.addEventListener('click', function (e) { game.moveImg(e); });
             ele.setAttribute("data-pos", "" + i);
             if (i === 0) {
@@ -68,7 +83,7 @@ var Game = (function () {
     Game.prototype.setStatusWithNode = function (node) {
         var imgItems = this.imgContainer.getElementsByClassName("item");
         for (var i = 0, len = imgItems.length; i < len; i++) {
-            imgItems[i].className = "item item-" + node.value[i];
+            imgItems[i].className = util_1.$replaceClass(imgItems[i].className, "item-" + node.value[i], "item");
             imgItems[i].setAttribute("data-pos", "" + node.value[i]);
         }
     };

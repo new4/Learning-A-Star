@@ -22,3 +22,17 @@ function $createEle(tagName, id, className) {
 }
 exports.$createEle = $createEle;
 ;
+function $replaceClass(className, str, prefix) {
+    var result = "";
+    var classArr = className.split(" ");
+    for (var i = 0, len = classArr.length; i < len; i++) {
+        var index = classArr[i].indexOf(prefix + "-");
+        if (index !== -1) {
+            classArr[i] = str;
+        }
+        result += classArr[i] + " ";
+    }
+    console.log("result -- ", result);
+    return result.trim();
+}
+exports.$replaceClass = $replaceClass;

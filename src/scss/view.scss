@@ -1,3 +1,5 @@
+@import "variables";
+
 @keyframes move-up {
   0% {
     top: 0px;
@@ -49,37 +51,47 @@
 div#image{
   margin: 0 auto;
   overflow: hidden;
+  padding: 0;
+  position: relative;
+  width: ($image-fragment-size + 2*$image-fragment-margin )* $scale;
+  height: ($image-fragment-size + 2*$image-fragment-margin)* $scale;
 
   .item{
-    margin: 1px;
     border: 0;
     padding: 0;
-    width: 80px;
-    height: 80px;
+    margin: $image-fragment-margin;
+    width: $image-fragment-size;
+    height: $image-fragment-size;
+    // position: absolute;
     float: left;
-    background-repeat: no-repeat;
+    background: url('../../images/scale3.png') no-repeat;
+    // transition: top 0.15s linear;
 
     &:hover{
       transform: scale(1.05);
     }
 
-    &::before{
-      content: attr(data-pos);
-      position: absolute;
-      width: 80px;
-      height: 80px;
-      line-height: 80px;
-      text-align: center;
-      margin: 1px;
-      background-color: #aaa;
-      font-size: 30px;
-    }
-  }
+    @for $i from 0 to $scale {
+      @for $j from 0 to $scale {
+        @if ($i == $scale - 1) and ($j == $scale - 1) {
+          &.item-0 {
+            background-position: $image-fragment-size $image-fragment-size;
+            // top: $i*($image-fragment-size + 2*$image-fragment-margin);
+            // left: $j*($image-fragment-size + 2*$image-fragment-margin);
+          }
+        } @else {
+          &.item-#{$i * $scale + $j + 1} {
+            background-position: -1*$image-fragment-size*$j -1*$image-fragment-size*$i;
+            // top: $i*($image-fragment-size + 2*$image-fragment-margin);
+            // left: $j*($image-fragment-size + 2*$image-fragment-margin);
+          }
+        }
 
-  .item.item-0{
-    &::before{
-      background-color: #fff;
-      content: "";
+        &.pos-#{$i * $scale + $j} {
+          top: $i*($image-fragment-size + 2*$image-fragment-margin);
+          left: $j*($image-fragment-size + 2*$image-fragment-margin);
+        }
+      }
     }
   }
 
@@ -97,6 +109,10 @@ div#image{
 
   .item.left::before{
     animation: move-left;
+  }
+
+  .item.up{
+    top: -80px;
   }
 
 }

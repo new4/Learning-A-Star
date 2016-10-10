@@ -1,6 +1,6 @@
 import Node from "./node";
 import Astar from './astar';
-import { $id, $createEle, DIRECTION } from './util';
+import { $id, $createEle, $replaceClass, DIRECTION } from './util';
 
 export default class Game{
   currentNode: Node
@@ -47,12 +47,34 @@ export default class Game{
    * 执行 A* 算法
    */
   start(){
+    let game = this;
     if ( Node.isSame( this.currentNode, this.targetNode ) ){
-      return console.log( 'win!!!' );
+      this.win();
     } else {
       let astar = new Astar( this.currentNode, this.targetNode );
       astar.run();
+
+      let solution = astar.getSolution();
+      if ( solution.length )  {
+        let len = solution.length,
+            i = len - 1;
+
+        let id = setInterval( function(){
+          if ( i === -1 ){
+            clearInterval( id );
+          } else {
+            game.setStatusWithNode( solution[i--] );
+          }
+        }, 500 );
+      }
     }
+  }
+
+  /**
+   * 赢得游戏
+   */
+  win(){
+    console.log( "win!!!" );
   }
 
   // private function
@@ -71,10 +93,10 @@ export default class Game{
    */
   private initImage(){
     let game = this;
-    game.imgContainer.style.width = `${ this.scale * 82 }px`;
+    // game.imgContainer.style.width = `${ this.scale * 82 }px`;
     // 节点的数组表示中的每一个数组的项对应一个格子
     for ( let i = Math.pow( game.scale, 2) - 1; i > -1; i -- ){
-      let ele = $createEle( 'div', undefined, `item item-${i}` );
+      let ele = $createEle( 'div', undefined, `item item-${i} pos-${i}` );
       ele.addEventListener( 'click', function(e){ game.moveImg(e) } );
       ele.setAttribute( "data-pos", `${i}` );
       if ( i === 0 ){
@@ -113,7 +135,7 @@ export default class Game{
   private setStatusWithNode( node: Node ){
     let imgItems = this.imgContainer.getElementsByClassName("item");
     for ( let i = 0, len = imgItems.length; i < len; i ++ ){
-      imgItems[i].className = `item item-${node.value[i]}`;
+      imgItems[i].className = $replaceClass( imgItems[i].className, `item-${node.value[i]}`, `item` );
       imgItems[i].setAttribute( "data-pos", `${node.value[i]}` );
     }
   }
