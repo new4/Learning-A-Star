@@ -29,9 +29,9 @@ export function $replaceClass( className: string, newClass: string, prefix: stri
 }
 
 export function $addClass( className: string, newClass: string ){
-
+  
 }
 
-export function $removeClass(){
+export function $removeClass( className: string, newClass: string ){
   
 }

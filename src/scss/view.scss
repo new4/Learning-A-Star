@@ -1,53 +1,5 @@
 @import "variables";
 
-@keyframes move-up {
-  0% {
-    top: 0px;
-  }
-  50% {
-    top: -40px;
-  }
-  100% {
-    top: -80px;
-  }
-}
-
-@keyframes move-right {
-  0% {
-    left: 0px;
-  }
-  50% {
-    left: 40px;
-  }
-  100% {
-    left: 80px;
-  }
-}
-
-@keyframes move-left {
-  0% {
-    left: 0px;
-  }
-  50% {
-    left: -40px;
-  }
-  100% {
-    left: -80px;
-  }
-}
-
-@keyframes move-down {
-  0% {
-    top: 0px;
-  }
-  50% {
-    top: 40px;
-  }
-  100% {
-    top: 80px;
-  }
-}
-
 div#image{
   margin: 0 auto;
   overflow: hidden;
@@ -65,6 +17,7 @@ div#image{
     // position: absolute;
     float: left;
     background: url('../../images/scale3.png') no-repeat;
+    // background: url('../../images/light.jpg') no-repeat;
     // transition: top 0.15s linear;
 
     &:hover{
@@ -76,14 +29,10 @@ div#image{
         @if ($i == $scale - 1) and ($j == $scale - 1) {
           &.item-0 {
             background-position: $image-fragment-size $image-fragment-size;
-            // top: $i*($image-fragment-size + 2*$image-fragment-margin);
-            // left: $j*($image-fragment-size + 2*$image-fragment-margin);
           }
         } @else {
           &.item-#{$i * $scale + $j + 1} {
             background-position: -1*$image-fragment-size*$j -1*$image-fragment-size*$i;
-            // top: $i*($image-fragment-size + 2*$image-fragment-margin);
-            // left: $j*($image-fragment-size + 2*$image-fragment-margin);
           }
         }
 
@@ -94,25 +43,4 @@ div#image{
       }
     }
   }
-
-  .item.up::before{
-    animation: move-up;
-  }
-
-  .item.right::before{
-    animation: move-right;
-  }
-
-  .item.down::before{
-    animation: move-down;
-  }
-
-  .item.left::before{
-    animation: move-left;
-  }
-
-  .item.up{
-    top: -80px;
-  }
-
 }
