@@ -1,12 +1,15 @@
 @import "variables";
 
+$imgWidth:  ($image-fragment-size + 2*$image-fragment-margin )* $scale; 
+$imgHeight: ($image-fragment-size + 2*$image-fragment-margin )* $scale; 
+
 div#image{
   margin: 0 auto;
   overflow: hidden;
   padding: 0;
   position: relative;
-  width: ($image-fragment-size + 2*$image-fragment-margin )* $scale;
-  height: ($image-fragment-size + 2*$image-fragment-margin)* $scale;
+  width: $imgWidth;
+  height: $imgHeight;
 
   .item{
     border: 0;
@@ -15,8 +18,7 @@ div#image{
     width: $image-fragment-size;
     height: $image-fragment-size;
     position: absolute;
-    background: url('../../images/scale3.png') no-repeat;
-    // background: url('../../images/light.jpg') no-repeat;
+    background: $imgUrl no-repeat;
 
     transition-property: top, left;
     transition-duration: 0.2s;
@@ -47,5 +49,22 @@ div#image{
         }
       }
     }
+  }
+
+  &.win::after {
+    content: '';
+    position: absolute;
+    background: #fff;
+    opacity: 0.6;
+    width: $imgWidth;
+    height: $imgHeight;
+    border: $image-fragment-margin*$scale solid #fff;
+  }
+
+  &.win p{
+    position: absolute;
+    width: $imgWidth;
+    height: $imgHeight;
+    border: $image-fragment-margin*$scale solid #fff;
   }
 }

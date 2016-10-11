@@ -20,13 +20,13 @@ export function $replaceClass( ele, newClass: string, prefix: string  ){
   ele.className = ele.className.replace( reg, newClass );
 }
 
-export function $addClass( ele, newClass: string ){
+function $addClass( ele, newClass: string ){
   if ( ele.className.indexOf( newClass ) === -1 ){
     ele.className = `${ele.className} ${newClass}`;
   }
 }
 
-export function $removeClass( ele, remove: string ){
+function $removeClass( ele, remove: string ){
   ele.className = ele.className.replace( remove, '' ).trim();
 }
 
