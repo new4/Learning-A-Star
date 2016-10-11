@@ -15,23 +15,45 @@ export function $createEle( tagName: string, id?: string, className?: string ){
   return ele;
 };
 
-export function $replaceClass( className: string, newClass: string, prefix: string  ){
-  let result = "";
-  let classArr = className.split( " " );
-  for ( let i = 0, len = classArr.length; i < len; i ++ ){
-    let index = classArr[i].indexOf( `${prefix}-` );
-    if ( index !== -1 ){
-      classArr[i] = newClass;
-    }
-    result += `${classArr[i]} `;
+export function $replaceClass( ele, newClass: string, prefix: string  ){
+  let reg = new RegExp( `${prefix}-(\\d)+`, 'g' );
+  ele.className = ele.className.replace( reg, newClass );
+}
+
+export function $addClass( ele, newClass: string ){
+  if ( ele.className.indexOf( newClass ) === -1 ){
+    ele.className = `${ele.className} ${newClass}`;
   }
-  return result.trim();
 }
 
-export function $addClass( className: string, newClass: string ){
-  
+export function $removeClass( ele, remove: string ){
+  ele.className = ele.className.replace( remove, '' ).trim();
 }
 
-export function $removeClass( className: string, newClass: string ){
-  
+export function $getPos( className: string ){
+  let classArr = className.split(' ');
+  for ( let i = 0, len = classArr.length; i < len; i ++ ){
+    if ( classArr[i].indexOf( 'pos' ) !== -1 ){
+        return classArr[i].split('-')[1];
+    }
+  }
+}
+
+export function $getImgId( className: string ){
+  let classArr = className.split(' ');
+  for ( let i = 0, len = classArr.length; i < len; i ++ ){
+    if ( classArr[i].indexOf( 'item-' ) !== -1 ){
+        return classArr[i].split('-')[1];
+    }
+  }
+}
+
+export function $exchangePos( item1, item2 ){
+  let pos1 = $getPos( item1.className );
+  let pos2 = $getPos( item2.className );
+
+  $removeClass( item2, `pos-${pos2}` );
+  $addClass( item2, `pos-${pos1}` );
+  $removeClass( item1, `pos-${pos1}` );
+  $addClass( item1, `pos-${pos2}` );
 }

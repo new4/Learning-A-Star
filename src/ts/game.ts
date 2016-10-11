@@ -1,6 +1,6 @@
 import Node from "./node";
 import Astar from './astar';
-import { $id, $createEle, $replaceClass, DIRECTION } from './util';
+import { $id, $createEle, $replaceClass, $getPos, $getImgId, $exchangePos, DIRECTION } from './util';
 
 export default class Game{
   currentNode: Node
@@ -10,9 +10,20 @@ export default class Game{
   private gameContainerId: string
   private imgContainerId: string
   private actionContainerId: string
+  private infoId: string
+
   private gameContainer
   private imgContainer
   private actionContainer
+  private infoContainer
+
+  // 缓存所有的图片片段 dom，免得再找
+  private imgElements = []
+  // 缓存空白图片片段 dom，免得再找
+  private blankImgEle
+
+  private timeInfoEle
+  private stepInfoEle
 
   constructor( gameContainerId: string, scale: number ){
     this.currentNode = new Node( scale );
@@ -22,10 +33,12 @@ export default class Game{
     this.gameContainerId = gameContainerId;
     this.imgContainerId = "image";
     this.actionContainerId = "action";
+    this.infoId = "info";
 
     this.gameContainer = $id( this.gameContainerId );
     this.imgContainer = $createEle( 'div', this.imgContainerId );
     this.actionContainer = $createEle( 'div', this.actionContainerId );
+    this.infoContainer = $createEle( 'div', this.infoId );
 
     this.init();
   }
@@ -39,7 +52,7 @@ export default class Game{
    */
   mix(){
     this.currentNode.shuffle();
-    this.setStatusWithNode( this.currentNode );
+    this.setStatusByNode( this.currentNode );
   }
 
   /**
@@ -59,15 +72,16 @@ export default class Game{
         let len = solution.length,
             i = len - 1;
 
-        let id = setInterval( function(){
+        let runId = setInterval( function(){
           if ( i === -1 ){
-            clearInterval( id );
+            clearInterval( runId );
+            game.win();
           } else {
             game.currentNode = solution[i];
-            game.setStatusWithNode( solution[i] );
+            game.setStatusByNode( solution[i] );
             i--;
           }
-        }, 500 );
+        }, 100 );
       }
     }
   }
@@ -91,20 +105,27 @@ export default class Game{
   }
 
   /**
-   * 拼图的图片显示部分的初始化
+   * 拼图游戏的图片显示部分的初始化
    */
   private initImage(){
     let game = this;
-    // game.imgContainer.style.width = `${ this.scale * 82 }px`;
     // 节点的数组表示中的每一个数组的项对应一个格子
     for ( let i = Math.pow( game.scale, 2) - 1; i > -1; i -- ){
+      // 样式 item-* 规定某一格子对应的图片片段，这部分初始化后不再改变
+      // 样式 pos-* 规定某一格子在 #image 容器中的位置，这部分随着节点变化而改变
       let ele = $createEle( 'div', undefined, `item item-${i} pos-${i}` );
-      ele.addEventListener( 'click', function(e){ game.moveImg(e) } );
-      ele.setAttribute( "data-pos", `${i}` );
+
+      ele.addEventListener( 'click', function(e){ game.imgFragmentHandler(e) } );
+
+      // 初始化的时调整空白格部分( 样式为： .item.item-0.pos-0 )的位置
+      // 同时将图片片段的 dom 缓存
       if ( i === 0 ){
         game.imgContainer.appendChild( ele );
+        game.imgElements.push( ele );
+        game.blankImgEle = ele;
       } else {
         game.imgContainer.insertBefore( ele, game.imgContainer.firstChild );
+        game.imgElements.unshift( ele );
       }
     }
     game.gameContainer.appendChild( game.imgContainer );
@@ -115,6 +136,7 @@ export default class Game{
    */
   private initOperation(){
     let game = this;
+    // 两个按钮 MIX 和 START
     ["MIX", "START"].forEach( function(item, index, array){
       let ele = $createEle( 'button', undefined, `btn btn-${item.toLowerCase()}` );
       ele.innerHTML = item;
@@ -132,26 +154,49 @@ export default class Game{
   }
 
   /**
-   * 根据节点的数组表示来更新页面中的显示状态
+   * 拼图的信息显示部分的初始化
    */
-  private setStatusWithNode( node: Node ){
-    let imgItems = this.imgContainer.getElementsByClassName("item");
-    for ( let i = 0, len = imgItems.length; i < len; i ++ ){
-      imgItems[i].className = $replaceClass( imgItems[i].className, `item-${node.value[i]}`, `item` );
-      imgItems[i].setAttribute( "data-pos", `${node.value[i]}` );
+  private initInfo(){
+    let game = this;
+
+    [ "time", "step" ].forEach( function( value ){
+      let divEle = $createEle( 'div', undefined, `${value}` );
+      let title = $createEle( 'span' );
+      let content = $createEle( 'span', undefined, `${value}` );
+
+      title.innerHTML = `${value}`;
+      content.innerHTML = '0';
+      game[ `${value}InfoEle` ] = content;
+
+      divEle.appendChild( title );
+      divEle.appendChild( content );
+      game.infoContainer.appendChild( divEle );
+    })
+    game.gameContainer.appendChild( game.infoContainer );
+  }
+
+  /**
+   * 根据节点的数组表示来设置图片片段的位置
+   */
+  private setStatusByNode( node: Node ){
+    // let imgElements = this.imgContainer.getElementsByClassName("item");
+    for ( let k = 0, len = node.value.length; k < len; k ++ ){
+      let pos = ( k === len - 1 ) ? 0 : k + 1;;
+      let v = ( node.value[k] === 0 ) ? len : node.value[k];
+      $replaceClass( this.imgElements[v - 1], `pos-${pos}`, 'pos' );
     }
   }
 
   /**
-   * 图片块上的 click 事件处理函数，用来移动图片块
+   * 图片片段上的 click 事件处理函数，用来移动图片片段
    */
-  private moveImg(e){
-    let imgNumber = e.target.getAttribute("data-pos");
+  private imgFragmentHandler(e){
+    let imgId = $getImgId( e.target.className );
     let nonZeroDir = this.currentNode.getNonZeroDirection();
-    if ( nonZeroDir[imgNumber] ){
-      let direction = DIRECTION[ `${nonZeroDir[ imgNumber ]}` ];
+    if ( nonZeroDir[imgId] ){
+      let direction = DIRECTION[ `${nonZeroDir[ imgId ]}` ];
       this.currentNode.moveTo( direction );
-      this.setStatusWithNode( this.currentNode );
+      $exchangePos( this.blankImgEle, e.target );
     }
   }
 }

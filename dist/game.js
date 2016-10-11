@@ -4,20 +4,23 @@ var astar_1 = require('./astar');
 var util_1 = require('./util');
 var Game = (function () {
     function Game(gameContainerId, scale) {
+        this.imgElements = [];
         this.currentNode = new node_1.default(scale);
         this.targetNode = new node_1.default(scale);
         this.scale = scale;
         this.gameContainerId = gameContainerId;
         this.imgContainerId = "image";
         this.actionContainerId = "action";
+        this.infoId = "info";
         this.gameContainer = util_1.$id(this.gameContainerId);
         this.imgContainer = util_1.$createEle('div', this.imgContainerId);
         this.actionContainer = util_1.$createEle('div', this.actionContainerId);
+        this.infoContainer = util_1.$createEle('div', this.infoId);
         this.init();
     }
     Game.prototype.mix = function () {
         this.currentNode.shuffle();
-        this.setStatusWithNode(this.currentNode);
+        this.setStatusByNode(this.currentNode);
     };
     Game.prototype.start = function () {
         var game = this;
@@ -30,14 +33,17 @@ var Game = (function () {
             var solution_1 = astar.getSolution();
             if (solution_1.length) {
                 var len = solution_1.length, i_1 = len - 1;
-                var id_1 = setInterval(function () {
+                var runId_1 = setInterval(function () {
                     if (i_1 === -1) {
-                        clearInterval(id_1);
+                        clearInterval(runId_1);
+                        game.win();
                     }
                     else {
-                        game.setStatusWithNode(solution_1[i_1--]);
+                        game.currentNode = solution_1[i_1];
+                        game.setStatusByNode(solution_1[i_1]);
+                        i_1--;
                     }
-                }, 500);
+                }, 100);
             }
         }
     };
@@ -52,13 +58,15 @@ var Game = (function () {
         var game = this;
         for (var i = Math.pow(game.scale, 2) - 1; i > -1; i--) {
             var ele = util_1.$createEle('div', undefined, "item item-" + i + " pos-" + i);
-            ele.addEventListener('click', function (e) { game.moveImg(e); });
-            ele.setAttribute("data-pos", "" + i);
+            ele.addEventListener('click', function (e) { game.imgFragmentHandler(e); });
             if (i === 0) {
                 game.imgContainer.appendChild(ele);
+                game.imgElements.push(ele);
+                game.blankImgEle = ele;
             }
             else {
                 game.imgContainer.insertBefore(ele, game.imgContainer.firstChild);
+                game.imgElements.unshift(ele);
             }
         }
         game.gameContainer.appendChild(game.imgContainer);
@@ -80,20 +88,36 @@ var Game = (function () {
         });
         game.gameContainer.appendChild(game.actionContainer);
     };
-    Game.prototype.setStatusWithNode = function (node) {
-        var imgItems = this.imgContainer.getElementsByClassName("item");
-        for (var i = 0, len = imgItems.length; i < len; i++) {
-            imgItems[i].className = util_1.$replaceClass(imgItems[i].className, "item-" + node.value[i], "item");
-            imgItems[i].setAttribute("data-pos", "" + node.value[i]);
+    Game.prototype.initInfo = function () {
+        var game = this;
+        ["time", "step"].forEach(function (value) {
+            var divEle = util_1.$createEle('div', undefined, "" + value);
+            var title = util_1.$createEle('span');
+            var content = util_1.$createEle('span', undefined, "" + value);
+            title.innerHTML = "" + value;
+            content.innerHTML = '0';
+            game[(value + "InfoEle")] = content;
+            divEle.appendChild(title);
+            divEle.appendChild(content);
+            game.infoContainer.appendChild(divEle);
+        });
+        game.gameContainer.appendChild(game.infoContainer);
+    };
+    Game.prototype.setStatusByNode = function (node) {
+        for (var k = 0, len = node.value.length; k < len; k++) {
+            var pos = (k === len - 1) ? 0 : k + 1;
+            ;
+            var v = (node.value[k] === 0) ? len : node.value[k];
+            util_1.$replaceClass(this.imgElements[v - 1], "pos-" + pos, 'pos');
         }
     };
-    Game.prototype.moveImg = function (e) {
-        var imgNumber = e.target.getAttribute("data-pos");
+    Game.prototype.imgFragmentHandler = function (e) {
+        var imgId = util_1.$getImgId(e.target.className);
         var nonZeroDir = this.currentNode.getNonZeroDirection();
-        if (nonZeroDir[imgNumber]) {
-            var direction = util_1.DIRECTION[("" + nonZeroDir[imgNumber])];
+        if (nonZeroDir[imgId]) {
+            var direction = util_1.DIRECTION[("" + nonZeroDir[imgId])];
             this.currentNode.moveTo(direction);
-            this.setStatusWithNode(this.currentNode);
+            util_1.$exchangePos(this.blankImgEle, e.target);
         }
     };
     return Game;

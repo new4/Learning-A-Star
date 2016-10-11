@@ -14,53 +14,56 @@ div#image {
     margin: 1px;
     width: 80px;
     height: 80px;
-    float: left;
-    background: url("../../images/scale3.png") no-repeat; }
+    position: absolute;
+    background: url("../../images/scale3.png") no-repeat;
+    transition-property: top, left;
+    transition-duration: 0.2s;
+    transition-timing-function: linear; }
     div#image .item:hover {
       transform: scale(1.05); }
     div#image .item.item-1 {
       background-position: 0px 0px; }
-    div#image .item.pos-0 {
+    div#image .item.pos-1 {
       top: 0px;
       left: 0px; }
     div#image .item.item-2 {
       background-position: -80px 0px; }
-    div#image .item.pos-1 {
+    div#image .item.pos-2 {
       top: 0px;
       left: 82px; }
     div#image .item.item-3 {
       background-position: -160px 0px; }
-    div#image .item.pos-2 {
+    div#image .item.pos-3 {
       top: 0px;
       left: 164px; }
     div#image .item.item-4 {
       background-position: 0px -80px; }
-    div#image .item.pos-3 {
+    div#image .item.pos-4 {
       top: 82px;
       left: 0px; }
     div#image .item.item-5 {
       background-position: -80px -80px; }
-    div#image .item.pos-4 {
+    div#image .item.pos-5 {
       top: 82px;
       left: 82px; }
     div#image .item.item-6 {
       background-position: -160px -80px; }
-    div#image .item.pos-5 {
+    div#image .item.pos-6 {
       top: 82px;
       left: 164px; }
     div#image .item.item-7 {
       background-position: 0px -160px; }
-    div#image .item.pos-6 {
+    div#image .item.pos-7 {
       top: 164px;
       left: 0px; }
     div#image .item.item-8 {
       background-position: -80px -160px; }
-    div#image .item.pos-7 {
+    div#image .item.pos-8 {
       top: 164px;
       left: 82px; }
     div#image .item.item-0 {
       background-position: 80px 80px; }
-    div#image .item.pos-8 {
+    div#image .item.pos-0 {
       top: 164px;
       left: 164px; }
 

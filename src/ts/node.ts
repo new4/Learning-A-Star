@@ -1,5 +1,7 @@
 import { DIRECTION } from './util';
 
+// LET DIRECTION = [ 'NONE', 'UP', 'RIGHT', 'DOWN', 'LEFT' ];
+
 export default class Node{
   value: number[]
   zeroIndex: number
