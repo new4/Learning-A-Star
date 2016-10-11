@@ -6,11 +6,12 @@ export default class Game{
   currentNode: Node
   targetNode: Node
   scale: number
+  running: boolean = false
 
   private gameContainerId: string
-  private imgContainerId: string
-  private actionContainerId: string
-  private infoId: string
+  private imgContainerId = "image"
+  private actionContainerId = "action"
+  private infoId = "info"
 
   private gameContainer
   private imgContainer
@@ -31,9 +32,6 @@ export default class Game{
     this.scale = scale;
 
     this.gameContainerId = gameContainerId;
-    this.imgContainerId = "image";
-    this.actionContainerId = "action";
-    this.infoId = "info";
 
     this.gameContainer = $id( this.gameContainerId );
     this.imgContainer = $createEle( 'div', this.imgContainerId );
@@ -51,6 +49,7 @@ export default class Game{
    * 混合，由起始节点乱序得到一个新的节点，并根据新节点设置页面中的显示状态
    */
   mix(){
+    if ( this.running ) return;
     this.currentNode.shuffle();
     this.setStatusByNode( this.currentNode );
   }
@@ -61,6 +60,10 @@ export default class Game{
    */
   start(){
     let game = this;
+
+    if ( game.running ) return;
+    game.running = true;
+
     if ( Node.isSame( this.currentNode, this.targetNode ) ){
       this.win();
     } else {
@@ -100,6 +103,7 @@ export default class Game{
    */
   win(){
     console.log( "win!!!" );
+    this.running = false;
   }
 
   // private function

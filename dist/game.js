@@ -4,14 +4,15 @@ var astar_1 = require('./astar');
 var util_1 = require('./util');
 var Game = (function () {
     function Game(gameContainerId, scale) {
+        this.running = false;
+        this.imgContainerId = "image";
+        this.actionContainerId = "action";
+        this.infoId = "info";
         this.imgElements = [];
         this.currentNode = new node_1.default(scale);
         this.targetNode = new node_1.default(scale);
         this.scale = scale;
         this.gameContainerId = gameContainerId;
-        this.imgContainerId = "image";
-        this.actionContainerId = "action";
-        this.infoId = "info";
         this.gameContainer = util_1.$id(this.gameContainerId);
         this.imgContainer = util_1.$createEle('div', this.imgContainerId);
         this.actionContainer = util_1.$createEle('div', this.actionContainerId);
@@ -19,11 +20,16 @@ var Game = (function () {
         this.init();
     }
     Game.prototype.mix = function () {
+        if (this.running)
+            return;
         this.currentNode.shuffle();
         this.setStatusByNode(this.currentNode);
     };
     Game.prototype.start = function () {
         var game = this;
+        if (game.running)
+            return;
+        game.running = true;
         if (node_1.default.isSame(this.currentNode, this.targetNode)) {
             this.win();
         }
@@ -56,6 +62,7 @@ var Game = (function () {
     };
     Game.prototype.win = function () {
         console.log("win!!!");
+        this.running = false;
     };
     Game.prototype.init = function () {
         this.initImage();

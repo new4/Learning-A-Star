@@ -20,7 +20,7 @@ div#image {
     background: url("../../images/scale3.png") no-repeat;
     transition-property: top, left;
     transition-duration: 0.2s;
-    transition-timing-function: linear; }
+    transition-timing-function: ease-in-out; }
     div#image .item:hover {
       transform: scale(1.05); }
     div#image .item.item-1 {

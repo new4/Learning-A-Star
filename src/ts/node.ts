@@ -188,7 +188,7 @@ export default class Node{
       }
     }
 
-    return 1*manhatten + 100*diff;
+    return 2*manhatten + 100*diff;
   }
 
   // private function

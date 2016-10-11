@@ -15,13 +15,12 @@ div#image{
     width: $image-fragment-size;
     height: $image-fragment-size;
     position: absolute;
-    // float: left;
     background: url('../../images/scale3.png') no-repeat;
     // background: url('../../images/light.jpg') no-repeat;
 
     transition-property: top, left;
     transition-duration: 0.2s;
-    transition-timing-function: linear;
+    transition-timing-function: ease-in-out;
 
     &:hover{
       transform: scale(1.05);

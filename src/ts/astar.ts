@@ -27,7 +27,6 @@ export default class Astar{
    * 运行 A* 算法
    */
   run(){
-
     let astar = this;
     while ( !Node.isSame( astar.openList.top(), astar.targetNode ) ){
       let currentNode = astar.openList.pop();
@@ -63,7 +62,6 @@ export default class Astar{
       this.solution.push( tailNode );
       tailNode = tailNode.parent;
     }
-
     // this.showSolution();
   }
 
