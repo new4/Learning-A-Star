@@ -65,7 +65,15 @@ export default class Game{
       this.win();
     } else {
       let astar = new Astar( this.currentNode, this.targetNode );
+
+      console.time( "AStar Run !" );
+      let startTime = new Date().getTime();
       astar.run();
+      let endTime = new Date().getTime();
+      console.timeEnd( "AStar Run !" );
+      console.log( " astar - ", astar );
+
+      game.timeInfoEle.innerHTML = `${endTime - startTime} ms`;
 
       let solution = astar.getSolution();
       if ( solution.length )  {
@@ -79,9 +87,10 @@ export default class Game{
           } else {
             game.currentNode = solution[i];
             game.setStatusByNode( solution[i] );
+            game.stepInfoEle.innerHTML = `${len - i}\/${len}`;
             i--;
           }
-        }, 100 );
+        }, 180 );
       }
     }
   }
@@ -102,6 +111,7 @@ export default class Game{
   private init(){
     this.initImage();
     this.initOperation();
+    this.initInfo();
   }
 
   /**
@@ -160,11 +170,11 @@ export default class Game{
     let game = this;
 
     [ "time", "step" ].forEach( function( value ){
-      let divEle = $createEle( 'div', undefined, `${value}` );
-      let title = $createEle( 'span' );
-      let content = $createEle( 'span', undefined, `${value}` );
+      let divEle = $createEle( 'div', undefined, 'info-item' );
+      let title = $createEle( 'span', undefined, 'title' );
+      let content = $createEle( 'span' );
 
-      title.innerHTML = `${value}`;
+      title.innerHTML = `${value}:`;
       content.innerHTML = '0';
       game[ `${value}InfoEle` ] = content;
 

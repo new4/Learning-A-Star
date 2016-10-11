@@ -1,5 +1,7 @@
 body {
-  padding-top: 100px; }
+  padding-top: 100px;
+  font-size: 16px;
+  color: #333; }
 
 div#image {
   margin: 0 auto;
@@ -82,3 +84,13 @@ div#action {
     div#action .btn:hover {
       cursor: pointer;
       font-weight: bold; }
+
+div#info {
+  margin: 20px auto 0;
+  overflow: auto;
+  width: 200px; }
+  div#info div.info-item {
+    margin: 10px 0;
+    position: relative; }
+    div#info div.info-item span {
+      margin-right: 10px; }

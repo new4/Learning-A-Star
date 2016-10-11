@@ -11,7 +11,6 @@ var Astar = (function () {
         this.openList = new heap_1.default([startNode], "F");
     }
     Astar.prototype.run = function () {
-        console.time("AStar Run !");
         var astar = this;
         var _loop_1 = function() {
             var currentNode = astar.openList.pop();
@@ -39,16 +38,12 @@ var Astar = (function () {
         while (!node_1.default.isSame(astar.openList.top(), astar.targetNode)) {
             _loop_1();
         }
-        console.timeEnd("AStar Run !");
-        console.log(" astar - ", astar);
         var tailNode = astar.openList.top();
         this.solution = [];
         while (tailNode) {
             this.solution.push(tailNode);
             tailNode = tailNode.parent;
         }
-        console.log("this.solution - ", this.solution);
-        this.showSolution();
     };
     Astar.prototype.getSolution = function () {
         return this.solution;

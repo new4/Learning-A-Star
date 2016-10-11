@@ -29,10 +29,16 @@ var Game = (function () {
         }
         else {
             var astar = new astar_1.default(this.currentNode, this.targetNode);
+            console.time("AStar Run !");
+            var startTime = new Date().getTime();
             astar.run();
+            var endTime = new Date().getTime();
+            console.timeEnd("AStar Run !");
+            console.log(" astar - ", astar);
+            game.timeInfoEle.innerHTML = (endTime - startTime) + " ms";
             var solution_1 = astar.getSolution();
             if (solution_1.length) {
-                var len = solution_1.length, i_1 = len - 1;
+                var len_1 = solution_1.length, i_1 = len_1 - 1;
                 var runId_1 = setInterval(function () {
                     if (i_1 === -1) {
                         clearInterval(runId_1);
@@ -41,9 +47,10 @@ var Game = (function () {
                     else {
                         game.currentNode = solution_1[i_1];
                         game.setStatusByNode(solution_1[i_1]);
+                        game.stepInfoEle.innerHTML = (len_1 - i_1) + "/" + len_1;
                         i_1--;
                     }
-                }, 100);
+                }, 180);
             }
         }
     };
@@ -53,6 +60,7 @@ var Game = (function () {
     Game.prototype.init = function () {
         this.initImage();
         this.initOperation();
+        this.initInfo();
     };
     Game.prototype.initImage = function () {
         var game = this;
@@ -91,10 +99,10 @@ var Game = (function () {
     Game.prototype.initInfo = function () {
         var game = this;
         ["time", "step"].forEach(function (value) {
-            var divEle = util_1.$createEle('div', undefined, "" + value);
-            var title = util_1.$createEle('span');
-            var content = util_1.$createEle('span', undefined, "" + value);
-            title.innerHTML = "" + value;
+            var divEle = util_1.$createEle('div', undefined, 'info-item');
+            var title = util_1.$createEle('span', undefined, 'title');
+            var content = util_1.$createEle('span');
+            title.innerHTML = value + ":";
             content.innerHTML = '0';
             game[(value + "InfoEle")] = content;
             divEle.appendChild(title);
