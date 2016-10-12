@@ -7,6 +7,7 @@ export default class Game{
   targetNode: Node
   scale: number
   running: boolean = false
+  isWin: boolean = false
 
   private gameContainerId: string
   private imgContainerId = "image"
@@ -49,7 +50,8 @@ export default class Game{
    * 混合，由起始节点乱序得到一个新的节点，并根据新节点设置页面中的显示状态
    */
   mix(){
-    if ( this.running ) return;
+    console.log( "runing = ", this.running, " -- ", "isWin = ", this.isWin );
+    if ( this.running || this.isWin ) return;
     this.currentNode.shuffle();
     this.setStatusByNode( this.currentNode );
   }
@@ -103,8 +105,13 @@ export default class Game{
    */
   win(){
     console.log( "win!!!" );
-    this.running = false;
-    this.imgContainer.className = 'win';
+    let game = this;
+    // let id = setTimeout( function(){
+      game.running = false;
+      game.imgContainer.className = 'win';
+      game.isWin = true;
+      // clearTimeout( id );
+    // }, 200);
   }
 
   // private function
@@ -144,6 +151,14 @@ export default class Game{
       }
     }
     game.gameContainer.appendChild( game.imgContainer );
+
+    // win 效果部分
+    this.imgContainer.addEventListener( 'click', function(e){
+      if ( this === e.target ) {
+        this.className = '';
+        game.isWin = false;
+      }
+    });
   }
 
   /**
@@ -212,6 +227,8 @@ export default class Game{
       let direction = DIRECTION[ `${nonZeroDir[ imgId ]}` ];
       this.currentNode.moveTo( direction );
       $exchangePos( this.blankImgEle, e.target );
+
+      if ( Node.isSame( this.currentNode, this.targetNode ) ) this.win();
     }
   }
 }

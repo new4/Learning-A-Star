@@ -6,8 +6,12 @@
 
 最近 typescript 2.0 也发布了，尝试使用 typescript 编写代码来学习，示例位于目录 example 下。
 
-## 安装
+## 安装&运行
 
 输入如下命令进行安装：
 
 > npm install
+
+输入如下命令运行：
+
+> gulp

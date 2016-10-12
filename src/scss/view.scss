@@ -51,20 +51,29 @@ div#image{
     }
   }
 
-  &.win::after {
-    content: '';
+  @mixin pseudo-elements {
     position: absolute;
-    background: #fff;
-    opacity: 0.6;
     width: $imgWidth;
     height: $imgHeight;
-    border: $image-fragment-margin*$scale solid #fff;
+    top: 0;
+    left: 0;
+    z-index: 1;
   }
 
-  &.win p{
-    position: absolute;
-    width: $imgWidth;
-    height: $imgHeight;
-    border: $image-fragment-margin*$scale solid #fff;
+  &.win::before {
+    @include pseudo-elements;
+    content: '';
+    background: #fff;
+    opacity: 0.6;
+  }
+
+  &.win::after {
+    @include pseudo-elements;
+    content: $successStr;
+    line-height: $imgHeight;
+    text-align: center;
+    font-size: 24px;
+    font-weight: bold;
+    color: #f00;
   }
 }
