@@ -45,6 +45,42 @@ var Astar = (function () {
             tailNode = tailNode.parent;
         }
     };
+    Astar.prototype.run2 = function () {
+        var astar = this;
+        var _loop_2 = function() {
+            var currentNode = astar.openList.pop();
+            astar.closedList.push(currentNode);
+            astar.b_closedList[currentNode.getValStr()] = 1;
+            var nextNodes = currentNode.getNextNodes();
+            nextNodes.forEach(function (nextNode) {
+                var cost = currentNode.getG() + currentNode.getCostToNext();
+                var index = astar.openList.getItemIndex(nextNode);
+                if (index !== undefined && cost < nextNode.getG()) {
+                    console.log("next 1");
+                    astar.openList.remove(index);
+                }
+                if (astar.isBelongToClosed(nextNode) && cost < nextNode.getG()) {
+                    console.log("next 2");
+                }
+                if (index === undefined && !astar.isBelongToClosed(nextNode)) {
+                    console.log("next 3");
+                    nextNode.setG(cost);
+                    nextNode.setF(nextNode.getG() + nextNode.getH(astar.targetNode));
+                    astar.openList.push(nextNode);
+                }
+            });
+        };
+        while (!node_1.default.isSame(astar.openList.top(), astar.targetNode)) {
+            _loop_2();
+        }
+        var tailNode = astar.openList.top();
+        this.solution = [];
+        while (tailNode) {
+            this.solution.push(tailNode);
+            tailNode = tailNode.parent;
+        }
+        this.showSolution();
+    };
     Astar.prototype.getSolution = function () {
         return this.solution;
     };

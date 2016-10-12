@@ -104,10 +104,7 @@ export default class Game{
   win(){
     console.log( "win!!!" );
     this.running = false;
-
     this.imgContainer.className = 'win';
-
-
   }
 
   // private function

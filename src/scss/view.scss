@@ -1,7 +1,7 @@
 @import "variables";
 
-$imgWidth:  ($image-fragment-size + 2*$image-fragment-margin )* $scale; 
-$imgHeight: ($image-fragment-size + 2*$image-fragment-margin )* $scale; 
+$imgWidth:  ($image-fragment-size + 2*$image-fragment-margin )* $scale;
+$imgHeight: ($image-fragment-size + 2*$image-fragment-margin )* $scale;
 
 div#image{
   margin: 0 auto;

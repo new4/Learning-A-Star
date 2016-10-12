@@ -66,6 +66,49 @@ export default class Astar{
   }
 
   /**
+   * 运行 A* 算法 ( 版本 2 ) 实验用
+   */
+  run2(){
+    let astar = this;
+    while ( !Node.isSame( astar.openList.top(), astar.targetNode ) ){
+      let currentNode = astar.openList.pop();
+      astar.closedList.push( currentNode );
+      astar.b_closedList[ currentNode.getValStr() ] = 1;
+
+      let nextNodes = currentNode.getNextNodes();
+
+      nextNodes.forEach(function(nextNode){
+        let cost = currentNode.getG() + currentNode.getCostToNext();
+        let index =  astar.openList.getItemIndex( nextNode );
+
+        if ( index !== undefined && cost < nextNode.getG() ){
+          console.log( "next 1" );
+          astar.openList.remove( index );
+        }
+
+        if ( astar.isBelongToClosed( nextNode ) && cost < nextNode.getG() ){
+          console.log( "next 2" );
+        }
+
+        if ( index === undefined && !astar.isBelongToClosed( nextNode ) ){
+          console.log( "next 3" );
+          nextNode.setG( cost );
+          nextNode.setF( nextNode.getG() + nextNode.getH( astar.targetNode ) );
+          astar.openList.push( nextNode );
+        }
+      });
+    }
+
+    let tailNode = astar.openList.top();
+    this.solution = [];
+    while( tailNode ){
+      this.solution.push( tailNode );
+      tailNode = tailNode.parent;
+    }
+    this.showSolution();
+  }
+
+  /**
    * 获取解决方案数组
    */
   getSolution(){
