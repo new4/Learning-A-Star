@@ -104,14 +104,13 @@ export default class Game{
    * 赢得游戏
    */
   win(){
-    console.log( "win!!!" );
     let game = this;
-    // let id = setTimeout( function(){
+    let id = setTimeout( function(){
       game.running = false;
       game.imgContainer.className = 'win';
       game.isWin = true;
-      // clearTimeout( id );
-    // }, 200);
+      clearTimeout( id );
+    }, 300);
   }
 
   // private function

@@ -18,7 +18,7 @@ div#image {
     width: 80px;
     height: 80px;
     position: absolute;
-    background: url(../../images/light.jpg) no-repeat;
+    background: url(../../images/scale3.png) no-repeat;
     transition-property: top, left;
     transition-duration: 0.2s;
     transition-timing-function: ease-in-out; }

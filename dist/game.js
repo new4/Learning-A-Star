@@ -63,11 +63,13 @@ var Game = (function () {
         }
     };
     Game.prototype.win = function () {
-        console.log("win!!!");
         var game = this;
-        game.running = false;
-        game.imgContainer.className = 'win';
-        game.isWin = true;
+        var id = setTimeout(function () {
+            game.running = false;
+            game.imgContainer.className = 'win';
+            game.isWin = true;
+            clearTimeout(id);
+        }, 300);
     };
     Game.prototype.init = function () {
         this.initImage();
