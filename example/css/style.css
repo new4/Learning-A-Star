@@ -1,120 +1,124 @@
 body {
-  padding-top: 100px;
   font-size: 16px;
-  color: #333;
-  margin: 0; }
+  margin: 0;
+  padding-top: 100px;
+  color: #333; }
 
 div#image {
-  margin: 0 auto;
-  overflow: hidden;
-  padding: 0;
   position: relative;
+  overflow: hidden;
   width: 246px;
-  height: 246px; }
+  height: 246px;
+  margin: 0 auto;
+  padding: 0; }
   div#image .item {
-    border: 0;
-    padding: 0;
-    margin: 1px;
+    position: absolute;
     width: 80px;
     height: 80px;
-    position: absolute;
-    background: url(../../images/scale3.png) no-repeat;
+    margin: 1px;
+    padding: 0;
+    -webkit-transition-timing-function: ease-in-out;
+    transition-timing-function: ease-in-out;
+    -webkit-transition-duration: .2s;
+    transition-duration: .2s;
+    -webkit-transition-property: top, left;
     transition-property: top, left;
-    transition-duration: 0.2s;
-    transition-timing-function: ease-in-out; }
+    border: 0;
+    background: url(../images/scale3.png) no-repeat; }
     div#image .item:hover {
+      -webkit-transform: scale(1.05);
       transform: scale(1.05); }
-    div#image .item.item-1 {
-      background-position: 0px 0px; }
-    div#image .item.pos-1 {
-      top: 0px;
-      left: 0px; }
-    div#image .item.item-2 {
-      background-position: -80px 0px; }
-    div#image .item.pos-2 {
-      top: 0px;
-      left: 82px; }
-    div#image .item.item-3 {
-      background-position: -160px 0px; }
-    div#image .item.pos-3 {
-      top: 0px;
-      left: 164px; }
-    div#image .item.item-4 {
-      background-position: 0px -80px; }
-    div#image .item.pos-4 {
-      top: 82px;
-      left: 0px; }
-    div#image .item.item-5 {
-      background-position: -80px -80px; }
-    div#image .item.pos-5 {
-      top: 82px;
-      left: 82px; }
-    div#image .item.item-6 {
-      background-position: -160px -80px; }
-    div#image .item.pos-6 {
-      top: 82px;
-      left: 164px; }
-    div#image .item.item-7 {
-      background-position: 0px -160px; }
-    div#image .item.pos-7 {
-      top: 164px;
-      left: 0px; }
-    div#image .item.item-8 {
-      background-position: -80px -160px; }
-    div#image .item.pos-8 {
-      top: 164px;
-      left: 82px; }
-    div#image .item.item-0 {
-      background-position: 80px 80px; }
-    div#image .item.pos-0 {
-      top: 164px;
-      left: 164px; }
+  div#image .item.item-1 {
+    background-position: 0px 0px; }
+  div#image .item.pos-1 {
+    top: 0px;
+    left: 0px; }
+  div#image .item.item-2 {
+    background-position: -80px 0px; }
+  div#image .item.pos-2 {
+    top: 0px;
+    left: 82px; }
+  div#image .item.item-3 {
+    background-position: -160px 0px; }
+  div#image .item.pos-3 {
+    top: 0px;
+    left: 164px; }
+  div#image .item.item-4 {
+    background-position: 0px -80px; }
+  div#image .item.pos-4 {
+    top: 82px;
+    left: 0px; }
+  div#image .item.item-5 {
+    background-position: -80px -80px; }
+  div#image .item.pos-5 {
+    top: 82px;
+    left: 82px; }
+  div#image .item.item-6 {
+    background-position: -160px -80px; }
+  div#image .item.pos-6 {
+    top: 82px;
+    left: 164px; }
+  div#image .item.item-7 {
+    background-position: 0px -160px; }
+  div#image .item.pos-7 {
+    top: 164px;
+    left: 0px; }
+  div#image .item.item-8 {
+    background-position: -80px -160px; }
+  div#image .item.pos-8 {
+    top: 164px;
+    left: 82px; }
+  div#image .item.item-0 {
+    background-position: 80px 80px; }
+  div#image .item.pos-0 {
+    top: 164px;
+    left: 164px; }
   div#image.win::before {
-    position: absolute;
-    width: 246px;
-    height: 246px;
-    top: 0;
-    left: 0;
-    z-index: 1;
     content: '';
+    opacity: .6;
     background: #fff;
-    opacity: 0.6; }
-  div#image.win::after {
     position: absolute;
-    width: 246px;
-    height: 246px;
+    z-index: 1;
     top: 0;
     left: 0;
-    z-index: 1;
-    content: "Win!";
-    line-height: 246px;
-    text-align: center;
+    width: 246px;
+    height: 246px; }
+  div#image.win::after {
     font-size: 24px;
     font-weight: bold;
-    color: #f00; }
+    line-height: 246px;
+    content: "Win!";
+    text-align: center;
+    color: #f00;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 246px;
+    height: 246px; }
 
 div#action {
+  overflow: auto;
   margin: 20px auto 0;
-  text-align: center;
-  overflow: auto; }
+  text-align: center; }
   div#action .btn {
     width: 60px;
     height: 60px;
-    border-radius: 30px;
+    margin-right: 20px;
+    color: #123;
     border: 0;
-    color: #112233;
-    outline: none;
-    margin-right: 20px; }
+    border-radius: 30px;
+    outline: none; }
     div#action .btn:hover {
-      cursor: pointer;
-      font-weight: bold; }
+      font-weight: bold;
+      cursor: pointer; }
 
 div#info {
-  margin: 20px auto 0;
   overflow: auto;
-  width: 200px; }
+  width: 200px;
+  margin: 20px auto 0; }
   div#info div.info-item {
-    margin: 10px 0;
-    position: relative; }
+    position: relative;
+    margin: 10px 0; }
     div#info div.info-item span {
       margin-right: 10px; }

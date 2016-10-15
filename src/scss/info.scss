@@ -1,13 +1,18 @@
-div#info{
-  margin: 20px auto 0;
-  overflow: auto;
-  width: 200px;
+div#info
+{
+    overflow: auto;
 
-  div.info-item{
-    margin: 10px 0;
-    position: relative;
-    span{
-      margin-right: 10px;
+    width: 200px;
+    margin: 20px auto 0;
+
+    div.info-item
+    {
+        position: relative;
+
+        margin: 10px 0;
+        span
+        {
+            margin-right: 10px;
+        }
     }
-  }
 }

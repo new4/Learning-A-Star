@@ -1,20 +1,27 @@
-div#action{
-  margin: 20px auto 0;
-  text-align: center;
-  overflow: auto;
+div#action
+{
+    overflow: auto;
 
-  .btn{
-    width: 60px;
-    height: 60px;
-    border-radius: 30px;
-    border: 0;
-    color: #112233;
-    outline: none;
-    margin-right: 20px;
+    margin: 20px auto 0;
 
-    &:hover{
-      cursor: pointer;
-      font-weight: bold;
+    text-align: center;
+
+    .btn
+    {
+        width: 60px;
+        height: 60px;
+        margin-right: 20px;
+
+        color: #123;
+        border: 0;
+        border-radius: 30px;
+        outline: none;
+
+        &:hover
+        {
+            font-weight: bold;
+
+            cursor: pointer;
+        }
     }
-  }
 }

@@ -1,7 +1,7 @@
 "use strict";
 var node_1 = require('./node');
 var heap_1 = require('./heap');
-var Astar = (function () {
+var Astar = (function() {
     function Astar(startNode, targetNode) {
         this.closedList = [];
         this.b_closedList = {};
@@ -10,14 +10,14 @@ var Astar = (function () {
         this.targetNode = targetNode;
         this.openList = new heap_1.default([startNode], "F");
     }
-    Astar.prototype.run = function () {
+    Astar.prototype.run = function() {
         var astar = this;
         var _loop_1 = function() {
             var currentNode = astar.openList.pop();
             astar.closedList.push(currentNode);
             astar.b_closedList[currentNode.getValStr()] = 1;
             var nextNodes = currentNode.getNextNodes();
-            nextNodes.forEach(function (nextNode) {
+            nextNodes.forEach(function(nextNode) {
                 var cost = currentNode.getG() + currentNode.getCostToNext();
                 var index = astar.openList.getItemIndex(nextNode);
                 if (index !== undefined && cost < nextNode.getG()) {
@@ -45,14 +45,14 @@ var Astar = (function () {
             tailNode = tailNode.parent;
         }
     };
-    Astar.prototype.run2 = function () {
+    Astar.prototype.run2 = function() {
         var astar = this;
         var _loop_2 = function() {
             var currentNode = astar.openList.pop();
             astar.closedList.push(currentNode);
             astar.b_closedList[currentNode.getValStr()] = 1;
             var nextNodes = currentNode.getNextNodes();
-            nextNodes.forEach(function (nextNode) {
+            nextNodes.forEach(function(nextNode) {
                 var cost = currentNode.getG() + currentNode.getCostToNext();
                 var index = astar.openList.getItemIndex(nextNode);
                 if (index !== undefined && cost < nextNode.getG()) {
@@ -81,15 +81,17 @@ var Astar = (function () {
         }
         this.showSolution();
     };
-    Astar.prototype.getSolution = function () {
+    Astar.prototype.getSolution = function() {
         return this.solution;
     };
-    Astar.prototype.isBelongToClosed = function (node) {
+    Astar.prototype.isBelongToClosed = function(node) {
         var str = node.getValStr();
         return !!this.b_closedList[str];
     };
-    Astar.prototype.showSolution = function () {
-        var len = this.solution.length, i = len - 1, scale = this.targetNode.scale;
+    Astar.prototype.showSolution = function() {
+        var len = this.solution.length,
+            i = len - 1,
+            scale = this.targetNode.scale;
         for (; i > -1; i--) {
             console.log("Step " + (len - i) + ": ");
             var item = this.solution[i].getValStr().split(',');
@@ -100,5 +102,7 @@ var Astar = (function () {
     };
     return Astar;
 }());
-Object.defineProperty(exports, "__esModule", { value: true });
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 exports.default = Astar;

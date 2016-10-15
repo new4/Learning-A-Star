@@ -1,79 +1,110 @@
-@import "variables";
-
-$imgWidth:  ($image-fragment-size + 2*$image-fragment-margin )* $scale;
+@import 'variables';
+$imgWidth: ($image-fragment-size + 2*$image-fragment-margin )* $scale;
 $imgHeight: ($image-fragment-size + 2*$image-fragment-margin )* $scale;
 
-div#image{
-  margin: 0 auto;
-  overflow: hidden;
-  padding: 0;
-  position: relative;
-  width: $imgWidth;
-  height: $imgHeight;
+div#image
+{
+    position: relative;
 
-  .item{
-    border: 0;
-    padding: 0;
-    margin: $image-fragment-margin;
-    width: $image-fragment-size;
-    height: $image-fragment-size;
-    position: absolute;
-    background: $imgUrl no-repeat;
+    overflow: hidden;
 
-    transition-property: top, left;
-    transition-duration: 0.2s;
-    transition-timing-function: ease-in-out;
-
-    &:hover{
-      transform: scale(1.05);
-    }
-
-    @for $row from 0 to $scale {
-      @for $col from 0 to $scale {
-        @if ($row == $scale - 1) and ($col == $scale - 1) {
-          &.item-0 {
-            background-position: $image-fragment-size $image-fragment-size;
-          }
-          &.pos-0 {
-            top: $row*($image-fragment-size + 2*$image-fragment-margin);
-            left: $col*($image-fragment-size + 2*$image-fragment-margin);
-          }
-        } @else {
-          &.item-#{$row * $scale + $col + 1} {
-            background-position: -1*$image-fragment-size*$col -1*$image-fragment-size*$row;
-          }
-          &.pos-#{$row * $scale + $col + 1} {
-            top: $row*($image-fragment-size + 2*$image-fragment-margin);
-            left: $col*($image-fragment-size + 2*$image-fragment-margin);
-          }
-        }
-      }
-    }
-  }
-
-  @mixin pseudo-elements {
-    position: absolute;
     width: $imgWidth;
     height: $imgHeight;
-    top: 0;
-    left: 0;
-    z-index: 1;
-  }
+    margin: 0 auto;
+    padding: 0;
 
-  &.win::before {
-    @include pseudo-elements;
-    content: '';
-    background: #fff;
-    opacity: 0.6;
-  }
+    .item
+    {
+        position: absolute;
 
-  &.win::after {
-    @include pseudo-elements;
-    content: $successStr;
-    line-height: $imgHeight;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-    color: #f00;
-  }
+        width: $image-fragment-size;
+        height: $image-fragment-size;
+        margin: $image-fragment-margin;
+        padding: 0;
+
+        -webkit-transition-timing-function: ease-in-out;
+                transition-timing-function: ease-in-out;
+        -webkit-transition-duration: .2s;
+                transition-duration: .2s;
+        -webkit-transition-property: top, left;
+                transition-property: top, left;
+
+        border: 0;
+        background: $imgUrl no-repeat;
+
+        &:hover
+        {
+            -webkit-transform: scale(1.05);
+                    transform: scale(1.05);
+        }
+    }
+
+    @for $row from 0 to $scale
+    {
+        @for $col from 0 to $scale
+        {
+            @if ($row == $scale - 1) and ($col == $scale - 1)
+            {
+                .item.item-0
+                {
+                    background-position: $image-fragment-size $image-fragment-size;
+                }
+
+                .item.pos-0
+                {
+                    top: $row*($image-fragment-size + 2*$image-fragment-margin);
+                    left: $col*($image-fragment-size + 2*$image-fragment-margin);
+                }
+            }
+            @else
+            {
+                $number: $row * $scale + $col + 1;
+                .item.item-#{$number}
+                {
+                    background-position: -1*$image-fragment-size*$col -1*$image-fragment-size*$row;
+                }
+
+                .item.pos-#{$number}
+                {
+                    top: $row*($image-fragment-size + 2*$image-fragment-margin);
+                    left: $col*($image-fragment-size + 2*$image-fragment-margin);
+                }
+            }
+        }
+    }
+
+    @mixin pseudo-elements
+    {
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        left: 0;
+
+        width: $imgWidth;
+        height: $imgHeight;
+    }
+
+    &.win::before
+    {
+        content: '';
+
+        opacity: .6;
+        background: #fff;
+
+        @include pseudo-elements;
+    }
+
+    &.win::after
+    {
+        font-size: 24px;
+        font-weight: bold;
+        line-height: $imgHeight;
+
+        content: $successStr;
+        text-align: center;
+
+        color: #f00;
+
+        @include pseudo-elements;
+    }
 }
