@@ -56,6 +56,7 @@ export default class Astar {
                 }
             });
         }
+
         let tailNode = astar.openList.top();
         this.solution = [];
         while (tailNode) {
