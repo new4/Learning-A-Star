@@ -4,17 +4,22 @@ export interface belongTo {
     [propName: string]: number;
 };
 
+/**
+ * 根据 ID 获取元素
+ */
 export function $id(eleId: string) {
     return document.getElementById(eleId);
 };
 
+/**
+ * 根据 tagName 创建一个新的元素，可以指定该元素的 ID 和 className
+ */
 export function $createEle(tagName: string, id?: string, className?: string) {
     let ele = document.createElement(tagName);
     if (id) ele.id = id;
     if (className) ele.className = className;
     return ele;
 };
-
 export function $replaceClass(ele, newClass: string, prefix: string) {
     let reg = new RegExp(`${prefix}-(\\d)+`, 'g');
     ele.className = ele.className.replace(reg, newClass);
@@ -26,8 +31,11 @@ function $addClass(ele, newClass: string) {
     }
 }
 
-function $removeClass(ele, remove: string) {
-    ele.className = ele.className.replace(remove, '').trim();
+/**
+ * 移除元素 ele 上的某个类名
+ */
+function $removeClass(ele, removeStr: string) {
+    ele.className = ele.className.replace(removeStr, '').trim();
 }
 
 export function $getPos(className: string) {

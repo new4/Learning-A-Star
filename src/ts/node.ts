@@ -2,19 +2,21 @@ import { DIRECTION } from './util';
 
 // LET DIRECTION = [ 'NONE', 'UP', 'RIGHT', 'DOWN', 'LEFT' ];
 
+/**
+ * 节点 Node 类定义
+ */
 export default class Node {
-    value: number[]
-    zeroIndex: number
-    scale: number
-    parent: Node
+    value: number[]     // 某一节点的值，用一维数组表示
+    zeroIndex: number   // 节点值数组中的 0 值所在位置的下标
+    scale: number       // 节点尺度，3*3，4*4，5*5 等等
+    parent: Node        // 当前节点的父节点，父节点通过对 0 位的某一步移动到达当前节点
     F: number = 0
     G: number = 0
+
     constructor(scale: number, initArr?: number[]) {
         this.scale = scale;
         this.value = initArr ? initArr : this.initNodeValueByScale(scale);
         this.zeroIndex = Math.pow(scale, 2) - 1;
-
-        // this.parent = new Node(this.scale);
     }
 
     // public function
