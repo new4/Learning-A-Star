@@ -1,7 +1,7 @@
 "use strict";
 var node_1 = require("./node");
-var astar_1 = require('./astar');
-var util_1 = require('./util');
+var astar_1 = require("./astar");
+var util_1 = require("./util");
 var Game = (function () {
     function Game(gameContainerId, scale) {
         this.running = false;
@@ -39,11 +39,11 @@ var Game = (function () {
             var astar = new astar_1.default(this.currentNode, this.targetNode);
             console.time("AStar Run !");
             var startTime = new Date().getTime();
-            astar.run();
+            astar.run2();
             var endTime = new Date().getTime();
             console.timeEnd("AStar Run !");
             console.log(" astar - ", astar);
-            game.timeInfoEle.innerHTML = (endTime - startTime) + " ms";
+            game.timeInfoEle.innerHTML = endTime - startTime + " ms";
             var solution_1 = astar.getSolution();
             if (solution_1.length) {
                 var len_1 = solution_1.length, i_1 = len_1 - 1;
@@ -55,7 +55,7 @@ var Game = (function () {
                     else {
                         game.currentNode = solution_1[i_1];
                         game.setStatusByNode(solution_1[i_1]);
-                        game.stepInfoEle.innerHTML = (len_1 - i_1) + "/" + len_1;
+                        game.stepInfoEle.innerHTML = len_1 - i_1 + "/" + len_1;
                         i_1--;
                     }
                 }, 180);
@@ -124,7 +124,7 @@ var Game = (function () {
             var content = util_1.$createEle('span');
             title.innerHTML = value + ":";
             content.innerHTML = '0';
-            game[(value + "InfoEle")] = content;
+            game[value + "InfoEle"] = content;
             divEle.appendChild(title);
             divEle.appendChild(content);
             game.infoContainer.appendChild(divEle);
@@ -143,7 +143,7 @@ var Game = (function () {
         var imgId = util_1.$getImgId(e.target.className);
         var nonZeroDir = this.currentNode.getNonZeroDirection();
         if (nonZeroDir[imgId]) {
-            var direction = util_1.DIRECTION[("" + nonZeroDir[imgId])];
+            var direction = util_1.DIRECTION["" + nonZeroDir[imgId]];
             this.currentNode.moveTo(direction);
             util_1.$exchangePos(this.blankImgEle, e.target);
             if (node_1.default.isSame(this.currentNode, this.targetNode))

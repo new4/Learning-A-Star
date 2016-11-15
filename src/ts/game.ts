@@ -73,7 +73,8 @@ export default class Game {
 
             console.time("AStar Run !");
             let startTime = new Date().getTime();
-            astar.run();
+            // astar.run();
+            astar.run2();
             let endTime = new Date().getTime();
             console.timeEnd("AStar Run !");
             console.log(" astar - ", astar);

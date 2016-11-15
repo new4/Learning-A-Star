@@ -1,5 +1,5 @@
 "use strict";
-var util_1 = require('./util');
+var util_1 = require("./util");
 var Node = (function () {
     function Node(scale, initArr) {
         this.F = 0;
@@ -43,7 +43,6 @@ var Node = (function () {
         for (var val in zeroDir) {
             Direction[zeroDir[val]] = val;
         }
-        console.log(Direction);
         return Direction;
     };
     Node.prototype.getNextNodes = function () {

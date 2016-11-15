@@ -71,33 +71,40 @@ export default class Astar {
      */
     run2() {
         let astar = this;
-        while (!Node.isSame(astar.openList.top(), astar.targetNode)) {
+        while (!astar.openList.isEmpty()) {
+            // 成功
+            if (Node.isSame(astar.openList.top(), astar.targetNode)) {
+                console.log("success!")
+                break;
+            };
             let currentNode = astar.openList.pop();
             astar.closedList.push(currentNode);
             astar.b_closedList[currentNode.getValStr()] = 1;
 
             let nextNodes = currentNode.getNextNodes();
 
-            nextNodes.forEach(function(nextNode) {
-                let cost = currentNode.getG() + currentNode.getCostToNext();
+            for (let i = 0, len = nextNodes.length; i < len; i++) {
+                let nextNode = nextNodes[i];
+
+                if (astar.isBelongToClosed(nextNode)) {
+                    // console.log("continue 1");
+                    continue;
+                }
+
                 let index = astar.openList.getItemIndex(nextNode);
-
-                if (index !== undefined && cost < nextNode.getG()) {
-                    console.log("next 1");
-                    astar.openList.remove(index);
-                }
-
-                if (astar.isBelongToClosed(nextNode) && cost < nextNode.getG()) {
-                    console.log("next 2");
-                }
-
-                if (index === undefined && !astar.isBelongToClosed(nextNode)) {
-                    console.log("next 3");
+                let cost = currentNode.getG() + currentNode.getCostToNext();
+                if (index === undefined) {
                     nextNode.setG(cost);
                     nextNode.setF(nextNode.getG() + nextNode.getH(astar.targetNode));
                     astar.openList.push(nextNode);
+                } else if (cost >= astar.openList.heap[index].getG()) {
+                    // console.log("continue 2");
+                    continue;
                 }
-            });
+
+                // nextNode.setG(cost);
+                // nextNode.setF(nextNode.getG() + nextNode.getH(astar.targetNode));
+            }
         }
 
         let tailNode = astar.openList.top();

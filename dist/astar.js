@@ -47,31 +47,32 @@ var Astar = (function () {
     };
     Astar.prototype.run2 = function () {
         var astar = this;
-        var _loop_2 = function () {
+        while (!astar.openList.isEmpty()) {
+            if (node_1.default.isSame(astar.openList.top(), astar.targetNode)) {
+                console.log("success!");
+                break;
+            }
+            ;
             var currentNode = astar.openList.pop();
             astar.closedList.push(currentNode);
             astar.b_closedList[currentNode.getValStr()] = 1;
             var nextNodes = currentNode.getNextNodes();
-            nextNodes.forEach(function (nextNode) {
-                var cost = currentNode.getG() + currentNode.getCostToNext();
+            for (var i = 0, len = nextNodes.length; i < len; i++) {
+                var nextNode = nextNodes[i];
+                if (astar.isBelongToClosed(nextNode)) {
+                    continue;
+                }
                 var index = astar.openList.getItemIndex(nextNode);
-                if (index !== undefined && cost < nextNode.getG()) {
-                    console.log("next 1");
-                    astar.openList.remove(index);
-                }
-                if (astar.isBelongToClosed(nextNode) && cost < nextNode.getG()) {
-                    console.log("next 2");
-                }
-                if (index === undefined && !astar.isBelongToClosed(nextNode)) {
-                    console.log("next 3");
+                var cost = currentNode.getG() + currentNode.getCostToNext();
+                if (index === undefined) {
                     nextNode.setG(cost);
                     nextNode.setF(nextNode.getG() + nextNode.getH(astar.targetNode));
                     astar.openList.push(nextNode);
                 }
-            });
-        };
-        while (!node_1.default.isSame(astar.openList.top(), astar.targetNode)) {
-            _loop_2();
+                else if (cost >= astar.openList.heap[index].getG()) {
+                    continue;
+                }
+            }
         }
         var tailNode = astar.openList.top();
         this.solution = [];

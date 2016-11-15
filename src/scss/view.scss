@@ -30,6 +30,7 @@ div#image
                 transition-property: top, left;
 
         border: 0;
+        border-radius: 3px;
         background: $imgUrl no-repeat;
 
         &:hover
